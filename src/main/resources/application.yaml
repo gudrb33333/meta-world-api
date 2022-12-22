@@ -1,0 +1,8 @@
+#Profile
+spring:
+  profiles:
+    active: local
+
+#Server port
+server:
+  port: 4300
