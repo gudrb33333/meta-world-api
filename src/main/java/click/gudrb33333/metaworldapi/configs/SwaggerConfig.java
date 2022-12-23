@@ -1,7 +1,5 @@
 package click.gudrb33333.metaworldapi.configs;
 
-
-import java.util.Collections;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +7,6 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Server;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -19,12 +16,9 @@ public class SwaggerConfig {
   @Value("${ext.appVersion}")
   private String appVersion;
 
-  private String version;
-
-
   @Bean
   public Docket restApiV1() {
-    version = "V1";
+    String version = "V1";
 
     return new Docket(DocumentationType.OAS_30) // open api spec 3.0
         .apiInfo(apiInfo())
