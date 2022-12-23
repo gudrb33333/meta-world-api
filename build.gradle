@@ -8,6 +8,16 @@ group = 'click.gudrb33333'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext {
+	appVersion = version
+}
+
+processResources {
+	filesMatching('**/application.yaml') {
+		expand(project.properties)
+	}
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor

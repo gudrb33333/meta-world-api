@@ -6,3 +6,6 @@ spring:
 #Server port
 server:
   port: 4300
+
+ext:
+  appVersion: ${ext.appVersion}
