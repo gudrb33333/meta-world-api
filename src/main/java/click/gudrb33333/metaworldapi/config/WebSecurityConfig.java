@@ -1,4 +1,4 @@
-package click.gudrb33333.metaworldapi.configs;
+package click.gudrb33333.metaworldapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
