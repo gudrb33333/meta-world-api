@@ -1,6 +1,6 @@
 #Datasource Configuration
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/meta_world_server_dev
-    username: postgres
-    password: postgres
+    url: jdbc:mysql://localhost:3306/meta_world_dev_db
+    username: root
+    password: mysql
