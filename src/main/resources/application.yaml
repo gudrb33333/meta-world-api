@@ -1,7 +1,7 @@
 #Profile
 spring:
   profiles:
-    active: local
+    active: dev
 
 #Server port
 server:
