@@ -14,6 +14,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       "/health",
       "/swagger*/**",
       "/v3/api-docs",
+      "/api/v1/auth/signup",
   };
 
   private static final String[] PERMIT_ADMIN_LIST = {};
