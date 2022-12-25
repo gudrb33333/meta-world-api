@@ -1,16 +1,20 @@
-package click.gudrb33333.metaworldapi.config;
+package click.gudrb33333.metaworldapi.config.swagger;
 
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Server;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
+@EnableOpenApi
 public class SwaggerConfig {
 
   @Value("${ext.appVersion}")
@@ -24,10 +28,10 @@ public class SwaggerConfig {
         .apiInfo(apiInfo())
         .groupName(version)
         .select()
-        .apis(RequestHandlerSelectors.basePackage("click.gudrb33333.metaworldapi.api")
-            .or(RequestHandlerSelectors.basePackage("click.gudrb33333.metaworldapi.api.v1")))
-        .paths(PathSelectors.ant("/*")
-            .or(PathSelectors.ant("/api/v1/**")))
+        .apis(
+            RequestHandlerSelectors.basePackage("click.gudrb33333.metaworldapi.api")
+                .or(RequestHandlerSelectors.basePackage("click.gudrb33333.metaworldapi.api.v1")))
+        .paths(PathSelectors.ant("/*").or(PathSelectors.ant("/api/v1/**")))
         .build();
   }
 
