@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.5.14'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 	id 'jacoco'
 }
 
@@ -38,6 +39,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.session:spring-session-core'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -47,8 +49,33 @@ dependencies {
 	// Swagger 3
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	// querydsl
+	implementation 'com.querydsl:querydsl-jpa'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 }
 
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+//querydsl 추가 끝
+
+//jacoco 추가 시작
 test {
 	// finalizedBy : 이(test) 작업에 대해 주어진 종료자 작업을 추가
 	finalizedBy jacocoTestReport // test 작업이 끝나고 jacocoTestReport를 실행
@@ -79,4 +106,4 @@ jacocoTestCoverageVerification {
 
 	}
 }
-
+//jacoco 추가 끝
