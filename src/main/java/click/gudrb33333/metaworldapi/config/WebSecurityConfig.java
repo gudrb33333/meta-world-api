@@ -1,25 +1,42 @@
 package click.gudrb33333.metaworldapi.config;
 
+import click.gudrb33333.metaworldapi.api.v1.auth.AuthService;
+import click.gudrb33333.metaworldapi.entity.type.Role;
+import click.gudrb33333.metaworldapi.filter.CustomUsernamePasswordAuthenticationFilter;
+import click.gudrb33333.metaworldapi.handler.CustomAuthenticationSuccessHandler;
+import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private final AuthService authService;
+  private final PasswordEncoderUtil passwordEncoderUtil;
+  private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
   private static final String[] PERMIT_ALL_LIST = {
       "/health",
       "/swagger*/**",
       "/v3/api-docs",
       "/api/v1/auth/signup",
+      "/api/v1/auth/signin",
   };
+  private static final String[] PERMIT_ADMIN_AND_MEMBER_LIST = {
 
+  };
   private static final String[] PERMIT_ADMIN_LIST = {};
-
-  private static final String[] PERMIT_ADMIN_AND_MEMBER_LIST = {};
+  private final String roleAdmin = String.valueOf(Role.ADMIN);
+  private final String roleMember = String.valueOf(Role.MEMBER);
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
@@ -39,16 +56,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    //security 접근 url
-    http.httpBasic().disable() //httpBasic().disable() rest api 이므로 기본설정 사용안함. 기본설정은 비인증시 로그인폼 화면으로 리다이렉트 된다.
-        .cors().configurationSource(corsConfigurationSource()) // cors 설정
+    // security access url
+    http.httpBasic()
+        .disable()
+        .cors()
+        .configurationSource(corsConfigurationSource())
         .and()
-        .csrf().disable() //rest api이므로 csrf 보안이 필요없으므로 disable처리.
-        .authorizeRequests() //다음 리퀘스트에 대한 사용권한 체크
-        .antMatchers(PERMIT_ALL_LIST).permitAll() //모두 접근 가능
-        .antMatchers(PERMIT_ADMIN_LIST).hasAnyRole("ADMIN") //ADMIN만 접근 가능
-        .antMatchers(PERMIT_ADMIN_AND_MEMBER_LIST).hasAnyRole("ADMIN,MEMBER") //ADMIN,MEMBER만 접근 가능
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .antMatchers(PERMIT_ALL_LIST)
+        .permitAll()
+        .antMatchers(PERMIT_ADMIN_LIST)
+        .hasAnyRole(roleAdmin)
+        .antMatchers(PERMIT_ADMIN_AND_MEMBER_LIST)
+        .hasAnyRole(roleAdmin, roleMember)
         .anyRequest()
-        .hasRole("MEMBER"); // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
+        .hasRole(roleMember)
+        .and()
+        .addFilterAt(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+  }
+
+  @Override
+  public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(authService).passwordEncoder(passwordEncoderUtil.passwordEncoder());
+  }
+
+  protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() {
+    CustomUsernamePasswordAuthenticationFilter authFilter = new CustomUsernamePasswordAuthenticationFilter();
+
+    try {
+      authFilter.setFilterProcessesUrl("/api/v1/auth/signin");
+      authFilter.setAuthenticationManager(this.authenticationManagerBean());
+      authFilter.setUsernameParameter("email");
+      authFilter.setPasswordParameter("password");
+      authFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
+      //authFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
+
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return authFilter;
   }
 }
