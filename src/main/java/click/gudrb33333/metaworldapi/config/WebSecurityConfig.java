@@ -11,6 +11,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    //configuration.addAllowedOriginPattern("*");
-    configuration.addAllowedOrigin("*");
+    configuration.addAllowedOriginPattern("*");
+    //configuration.addAllowedOrigin("*");
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.setAllowCredentials(true);
@@ -53,8 +57,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return source;
   }
 
+  @Bean
+  public CookieSerializer cookieSerializer() {
+    DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+    serializer.setUseSecureCookie(true);
+    serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
+    serializer.setSameSite("None");
+    return serializer;
+  }
+
+  @Bean
+  public SessionRegistry sessionRegistry() {
+    return new SessionRegistryImpl();
+  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+
+    http.sessionManagement()
+        .maximumSessions(2000)
+        .maxSessionsPreventsLogin(true)
+        .sessionRegistry(sessionRegistry())
+        .expiredUrl("/");
 
     // security access url
     http.httpBasic()
