@@ -24,7 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "mambers")
+@Table(name = "members")
 public class Member {
   @Id
   @GeneratedValue(generator = "UUID")
