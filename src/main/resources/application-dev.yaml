@@ -6,9 +6,9 @@ spring:
     password: mysql
 #JPA Configuration
   jpa:
-    generate-ddl: true
+    generate-ddl: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         show_sql: true
