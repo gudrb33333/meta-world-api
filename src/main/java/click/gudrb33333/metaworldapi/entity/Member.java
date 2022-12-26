@@ -1,5 +1,6 @@
 package click.gudrb33333.metaworldapi.entity;
 
+import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -39,8 +40,9 @@ public class Member {
   @NotNull
   private String password;
 
+  @Enumerated(EnumType.STRING)
   @NotNull
-  private String loginType;
+  private LoginType loginType;
 
   @Enumerated(EnumType.STRING)
   @NotNull
@@ -55,7 +57,7 @@ public class Member {
   private LocalDateTime updatedAt;
 
   @Builder
-  public Member(String email, String password, String loginType, Role role) {
+  public Member(String email, String password, LoginType loginType, Role role) {
     this.email = email;
     this.password = password;
     this.loginType = loginType;
