@@ -1,8 +1,8 @@
 package click.gudrb33333.metaworldapi.entity.type;
 
 public enum Role {
-  ROLE_USER("ROLE_MEMBER"),
-  ROLE_ADMIN("ROLE_ADMIN");
+  MEMBER("MEMBER"),
+  ADMIN("ADMIN");
 
   private final String role;
 
