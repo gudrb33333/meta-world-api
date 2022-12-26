@@ -1,17 +1,21 @@
 package click.gudrb33333.metaworldapi.api.v1.auth;
 
 import click.gudrb33333.metaworldapi.api.v1.auth.dto.MemberCreateDto;
+import click.gudrb33333.metaworldapi.api.v1.auth.dto.MemberLoginDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,5 +31,11 @@ public class AuthController {
       throws Exception {
     authService.signup(memberCreateDto);
     return ResponseEntity.ok().body("OK");
+  }
+
+  @PostMapping("/signin")
+  @ApiOperation(value = "유저 로그인", notes = "로그인을 한다.")
+  public void signin(@Valid @RequestBody MemberLoginDto MemberLoginDto) throws Exception {
+    // use spring security - (WebSecurityConfig,AuthService(loadUserByUsername))
   }
 }
