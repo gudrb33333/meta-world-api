@@ -38,4 +38,11 @@ public class AuthController {
   public void signin(@Valid @RequestBody MemberLoginDto MemberLoginDto) throws Exception {
     // use spring security - (WebSecurityConfig,AuthService(loadUserByUsername))
   }
+
+  @DeleteMapping(value="/logout")
+  @ApiOperation(value = "유저 로그아웃", notes = "로그아웃을 한다.")
+  public ResponseEntity<Object> logout(@ApiIgnore HttpSession session) throws Exception{
+    session.invalidate();
+    return ResponseEntity.ok().body("OK");
+  }
 }
