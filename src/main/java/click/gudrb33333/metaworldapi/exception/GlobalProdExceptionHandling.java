@@ -68,7 +68,7 @@ public class GlobalProdExceptionHandling {
   @ExceptionHandler({CatchedException.class})
   public ResponseEntity<?> handleCatchedException(CatchedException e) {
     HttpStatus status = e.getStatus();
-    return errorResponse(status.toString(), status);
+    return errorResponse(String.valueOf(status), status);
   }
 
   protected ResponseEntity<String> errorResponse(String message, HttpStatus status) {
