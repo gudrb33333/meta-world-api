@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       "/api/v1/auth/signin",
   };
   private static final String[] PERMIT_ADMIN_AND_MEMBER_LIST = {
-
+      "/api/v1/auth/logout",
   };
   private static final String[] PERMIT_ADMIN_LIST = {};
   private final String roleAdmin = String.valueOf(Role.ADMIN);
