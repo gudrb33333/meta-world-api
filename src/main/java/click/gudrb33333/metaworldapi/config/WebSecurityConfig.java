@@ -46,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.addAllowedOriginPattern("*");
-    //configuration.addAllowedOrigin("*");
+    configuration.addAllowedOriginPattern("https://hubs.local:8080");
+    //configuration.addAllowedOrigin("https://hubs.local:8080");
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.setAllowCredentials(true);
@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     source.registerCorsConfiguration("/**", configuration);
     return source;
   }
+
 
   @Bean
   public CookieSerializer cookieSerializer() {
