@@ -1,0 +1,12 @@
+#Datasource Configuration
+spring:
+  datasource:
+    url: <need value>
+    username: <need value>
+    password: <need value>
+
+#JPA Configuration
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
