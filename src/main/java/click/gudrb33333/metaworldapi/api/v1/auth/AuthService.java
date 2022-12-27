@@ -5,6 +5,7 @@ import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,8 +32,7 @@ public class AuthService implements UserDetailsService {
         .findByEmail(memberCreateDto.getEmail())
         .ifPresent(
             m -> {
-              throw new CatchedException(
-                  "email already exists(unique key violation)", HttpStatus.CONFLICT);
+              throw new CatchedException(ErrorMessage.CONFLICT_EMAIL, HttpStatus.CONFLICT);
             });
 
     String encodedPassword =
@@ -59,7 +58,7 @@ public class AuthService implements UserDetailsService {
             .findByEmailAndLoginType(email, LoginType.LOCAL)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException("member not found", HttpStatus.NOT_FOUND);
+                  throw new CatchedException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
                 });
 
     List<GrantedAuthority> authorities = new ArrayList<>();
