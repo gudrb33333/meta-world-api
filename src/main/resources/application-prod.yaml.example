@@ -10,3 +10,6 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: validate
+
+frontend:
+  domain: <need value>
