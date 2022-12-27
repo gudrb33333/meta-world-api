@@ -57,16 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return source;
   }
 
-
-  @Bean
-  public CookieSerializer cookieSerializer() {
-    DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-    serializer.setUseSecureCookie(true);
-    serializer.setDomainNamePattern("^.+?\\.(\\w+\\.[a-z]+)$");
-    serializer.setSameSite("None");
-    return serializer;
-  }
-
   @Bean
   public SessionRegistry sessionRegistry() {
     return new SessionRegistryImpl();
