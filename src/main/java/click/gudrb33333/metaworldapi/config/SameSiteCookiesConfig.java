@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SameSiteCookiesConfig implements WebMvcConfigurer {
     @Bean
-    public TomcatContextCustomizer sameSiteCookiesConfig() {
+    public TomcatContextCustomizer setSameSiteCookies() {
         return context -> {
             final Rfc6265CookieProcessor cookieProcessor = new Rfc6265CookieProcessor();
             cookieProcessor.setSameSiteCookies(SameSiteCookies.NONE.getValue());
