@@ -19,7 +19,7 @@ public class SwaggerDevServer implements WebMvcOpenApiTransformationFilter {
     OpenAPI openApi = context.getSpecification();
     Server localServer = new Server();
     localServer.setDescription("dev");
-    localServer.setUrl("http://localhost:4300");
+    localServer.setUrl("https://localhost:4300");
 
     openApi.setServers(List.of(localServer));
     return openApi;
