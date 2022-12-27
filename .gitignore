@@ -4,6 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+key.p12
+
+### application yaml ###
+src/main/resources/application-**.yaml
 
 ### STS ###
 .apt_generated
