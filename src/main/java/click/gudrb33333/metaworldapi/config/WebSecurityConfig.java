@@ -13,11 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.session.web.http.CookieSerializer;
-import org.springframework.session.web.http.DefaultCookieSerializer;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -27,35 +22,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthService authService;
   private final PasswordEncoderUtil passwordEncoderUtil;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+  private final CorsConfig corsConfig;
 
   private static final String[] PERMIT_ALL_LIST = {
-      "/health",
-      "/swagger*/**",
-      "/v3/api-docs",
-      "/api/v1/auth/signup",
-      "/api/v1/auth/signin",
+    "/health", "/swagger*/**", "/v3/api-docs", "/api/v1/auth/signup", "/api/v1/auth/signin",
   };
   private static final String[] PERMIT_ADMIN_AND_MEMBER_LIST = {
-      "/api/v1/auth/logout",
+    "/api/v1/auth/logout",
   };
   private static final String[] PERMIT_ADMIN_LIST = {};
   private final String roleAdmin = String.valueOf(Role.ADMIN);
   private final String roleMember = String.valueOf(Role.MEMBER);
-
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-
-    //configuration.addAllowedOriginPattern("https://meta-world.gudrb33333.click");
-    configuration.addAllowedOrigin("*");
-    configuration.addAllowedHeader("*");
-    configuration.addAllowedMethod("*");
-    configuration.setAllowCredentials(true);
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
 
   @Bean
   public SessionRegistry sessionRegistry() {
@@ -75,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.httpBasic()
         .disable()
         .cors()
-        .configurationSource(corsConfigurationSource())
+        .configurationSource(corsConfig.corsConfigurationSource())
         .and()
         .csrf()
         .disable()
@@ -98,7 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() {
-    CustomUsernamePasswordAuthenticationFilter authFilter = new CustomUsernamePasswordAuthenticationFilter();
+    CustomUsernamePasswordAuthenticationFilter authFilter =
+        new CustomUsernamePasswordAuthenticationFilter();
 
     try {
       authFilter.setFilterProcessesUrl("/api/v1/auth/signin");
@@ -106,9 +84,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       authFilter.setUsernameParameter("email");
       authFilter.setPasswordParameter("password");
       authFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
-      //authFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
 
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
 
