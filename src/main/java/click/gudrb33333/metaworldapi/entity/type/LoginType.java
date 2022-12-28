@@ -1,7 +1,7 @@
 package click.gudrb33333.metaworldapi.entity.type;
 
 public enum LoginType {
-  LOCAL("LOCAL");
+  LOCAL("local");
 
   private final String loginType;
 
