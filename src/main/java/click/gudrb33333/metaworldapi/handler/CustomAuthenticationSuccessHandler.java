@@ -30,7 +30,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
       throws IOException, ServletException {
 
     HttpSession session = request.getSession();
-    User userSpringSecurity = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User userSpringSecurity =
+        (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     Member member =
         memberRepository
             .findByEmailAndLoginType(userSpringSecurity.getUsername(), LoginType.LOCAL)
@@ -39,7 +40,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                   throw new CatchedException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
                 });
 
-    session.setAttribute("role", String.valueOf( userSpringSecurity.getAuthorities()));
-    session.setAttribute("connected-user" , member);
+    session.setAttribute("role", String.valueOf(userSpringSecurity.getAuthorities()));
+    session.setAttribute("current-member", member);
   }
 }
