@@ -1,6 +1,8 @@
 package click.gudrb33333.metaworldapi.entity.type;
 
-public enum LoginType {
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public enum LoginType implements BaseEnum<String> {
   LOCAL("local");
 
   private final String loginType;
@@ -9,7 +11,9 @@ public enum LoginType {
     this.loginType = loginType;
   }
 
-  public String value() {
+  @Override
+  @JsonValue
+  public String getValue() {
     return loginType;
   }
 }
