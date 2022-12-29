@@ -75,6 +75,7 @@ public class GlobalDevExceptionHandling {
 
   protected ResponseEntity<ExceptionMessage> errorResponse(Throwable throwable, HttpStatus status) {
     if (null != throwable) {
+      throwable.printStackTrace();
       return response(new ExceptionMessage(throwable), status);
     } else {
       return response(null, status);
