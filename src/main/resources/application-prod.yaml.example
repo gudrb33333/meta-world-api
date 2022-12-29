@@ -13,3 +13,19 @@ spring:
 
 frontend:
   domain: <need value>
+
+# AWS S3 bucket Information
+cloud:
+  aws:
+    s3:
+      bucket: <need value>
+    region:
+      static: <need value>
+    stack:
+      auto: false
+    credentials:
+      accessKey: <need value>
+      secretKey: <need value>
+    cloudFront:
+      keyPairId: <need value>
+      distributionDomain: <need value>
