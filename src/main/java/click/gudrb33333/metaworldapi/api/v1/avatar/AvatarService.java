@@ -35,37 +35,32 @@ public class AvatarService {
   @Transactional(rollbackFor = Exception.class)
   public void createAvatar(AvatarCreateDto avatarCreateDto, MultipartFile avatarFile) {
 
-    try {
+    AssetType assetType = AssetType.AVATAR;
+    UUID fileUuid = UUID.randomUUID();
+    String extension = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
+    S3DirectoryType s3DirectoryType = S3DirectoryType.AVATAR;
+    GenderType genderType = avatarCreateDto.getGenderType();
+    PublicType publicType = avatarCreateDto.getPublicType();
 
-      AssetType assetType = AssetType.AVATAR;
-      UUID fileUuid = UUID.randomUUID();
-      String extension = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
-      S3DirectoryType s3DirectoryType = S3DirectoryType.AVATAR;
-      GenderType genderType = avatarCreateDto.getGenderType();
-      PublicType publicType = avatarCreateDto.getPublicType();
+    Avatar avatar =
+        Avatar.builder()
+            .assetType(assetType)
+            .s3AssetUUID(fileUuid)
+            .extension(extension)
+            .s3DirectoryType(s3DirectoryType)
+            .genderType(genderType)
+            .publicType(publicType)
+            .build();
 
-      Avatar avatar =
-          Avatar.builder()
-              .assetType(assetType)
-              .s3AssetUUID(fileUuid)
-              .extension(extension)
-              .s3DirectoryType(s3DirectoryType)
-              .genderType(genderType)
-              .publicType(publicType)
-              .build();
+    Avatar avatarResult = avatarRepository.save(avatar);
 
-      Avatar avatarResult = avatarRepository.save(avatar);
+    awsS3Util.uploadFileToS3(fileUuid, extension, s3DirectoryType, avatarFile);
 
-      awsS3Util.uploadFileToS3(fileUuid, extension, s3DirectoryType, avatarFile);
+    Member currentMember = sessionUtil.getCurrentMember();
+    MemberAsset memberAsset =
+        MemberAsset.builder().asset(avatarResult).member(currentMember).build();
 
-      Member currentMember = sessionUtil.getCurrentMember();
-      MemberAsset memberAsset =
-          MemberAsset.builder().asset(avatarResult).member(currentMember).build();
-
-      memberAssetRepository.save(memberAsset);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    memberAssetRepository.save(memberAsset);
   }
 
   public AvatarResponseDto findOneAvatar(UUID uuid) {
