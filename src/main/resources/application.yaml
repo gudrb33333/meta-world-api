@@ -1,10 +1,16 @@
-#Profile
 spring:
+  #Profile
   profiles:
     active: dev
+  #Flyway config
   flyway:
     enabled: true
     baseline-on-migrate: true
+  #Multipart config
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 #Server port
 server:
