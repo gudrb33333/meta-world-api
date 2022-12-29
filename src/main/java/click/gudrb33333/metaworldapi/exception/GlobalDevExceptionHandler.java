@@ -24,12 +24,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @Profile("dev")
-public class GlobalDevExceptionHandling {
-  protected Logger logger;
+public class GlobalDevExceptionHandler {
 
-  public GlobalDevExceptionHandling() {
-    logger = LoggerFactory.getLogger(getClass());
-  }
+  protected Logger logger;
 
   public ResponseEntity<?> handleUnAuthenticationException(Exception e) {
     return errorResponse(e, HttpStatus.BAD_REQUEST);

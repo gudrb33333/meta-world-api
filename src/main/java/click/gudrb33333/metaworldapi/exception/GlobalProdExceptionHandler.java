@@ -21,12 +21,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @Profile("prod")
-public class GlobalProdExceptionHandling {
-  protected Logger logger;
+public class GlobalProdExceptionHandler {
 
-  public GlobalProdExceptionHandling() {
-    logger = LoggerFactory.getLogger(getClass());
-  }
+  protected Logger logger;
 
   public ResponseEntity<?> handleUnAuthenticationException(Exception e) {
     return errorResponse("400 UNAUTHENTICATED", HttpStatus.BAD_REQUEST);
