@@ -1,10 +1,12 @@
 package click.gudrb33333.metaworldapi.entity;
 
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
+import click.gudrb33333.metaworldapi.entity.type.LoginTypeConverter;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,9 +24,9 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "members")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
   @Id
   @GeneratedValue(generator = "UUID")
@@ -40,8 +42,9 @@ public class Member {
   @NotNull
   private String password;
 
-  @Enumerated(EnumType.STRING)
   @NotNull
+  @Column(name = "login_type")
+  @Convert(converter = LoginTypeConverter.class)
   private LoginType loginType;
 
   @Enumerated(EnumType.STRING)
