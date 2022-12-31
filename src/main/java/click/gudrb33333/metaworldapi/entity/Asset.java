@@ -1,6 +1,8 @@
 package click.gudrb33333.metaworldapi.entity;
 
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
+import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
+import click.gudrb33333.metaworldapi.entity.type.ExtensionTypeConverter;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.PublicTypeConverter;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
@@ -54,7 +56,8 @@ public abstract class Asset {
 
   @NotNull
   @Column(name = "extension")
-  private String extension;
+  @Convert(converter = ExtensionTypeConverter.class)
+  private ExtensionType extension;
 
   @NotNull
   @Column(name = "s3_directory")
@@ -77,7 +80,7 @@ public abstract class Asset {
   public Asset(
       AssetType assetType,
       UUID s3AssetUUID,
-      String extension,
+      ExtensionType extension,
       S3DirectoryType s3DirectoryType,
       PublicType publicType) {
     this.assetType = assetType;
