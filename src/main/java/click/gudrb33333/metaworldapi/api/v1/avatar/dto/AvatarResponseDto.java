@@ -1,6 +1,7 @@
 package click.gudrb33333.metaworldapi.api.v1.avatar.dto;
 
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
+import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
@@ -17,7 +18,7 @@ public class AvatarResponseDto {
   private UUID assetId;
   private AssetType assetType;
   private UUID s3AssetUUID;
-  private String extension;
+  private ExtensionType extension;
   private S3DirectoryType s3DirectoryType;
   private PublicType publicTyp;
   private GenderType genderType;
@@ -27,7 +28,7 @@ public class AvatarResponseDto {
       UUID assetId,
       AssetType assetType,
       UUID s3AssetUUID,
-      String extension,
+      ExtensionType extension,
       S3DirectoryType s3DirectoryType,
       PublicType publicType,
       GenderType genderType) {
