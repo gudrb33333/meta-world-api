@@ -2,6 +2,7 @@ package click.gudrb33333.metaworldapi.entity;
 
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.AssetType.Values;
+import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.GenderTypeConverter;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
@@ -32,7 +33,7 @@ public class Avatar extends Asset {
   public Avatar(
       AssetType assetType,
       UUID s3AssetUUID,
-      String extension,
+      ExtensionType extension,
       S3DirectoryType s3DirectoryType,
       PublicType publicType,
       GenderType genderType) {
