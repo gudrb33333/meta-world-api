@@ -6,6 +6,7 @@ import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.MemberAsset;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
+import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
@@ -15,13 +16,12 @@ import click.gudrb33333.metaworldapi.repository.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
 import click.gudrb33333.metaworldapi.util.SessionUtil;
+import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -33,11 +33,12 @@ public class AvatarService {
   private final AwsS3Util awsS3Util;
 
   @Transactional(rollbackFor = Exception.class)
-  public void createAvatar(AvatarCreateDto avatarCreateDto, MultipartFile avatarFile) {
+  public void createAvatar(AvatarCreateDto avatarCreateDto) throws IOException {
 
-    AssetType assetType = AssetType.AVATAR;
     UUID fileUuid = UUID.randomUUID();
-    String extension = StringUtils.getFilenameExtension(avatarFile.getOriginalFilename());
+    String avatarUrl = avatarCreateDto.getAvatarUrl();
+    AssetType assetType = AssetType.AVATAR;
+    ExtensionType extension = ExtensionType.GLB;
     S3DirectoryType s3DirectoryType = S3DirectoryType.AVATAR;
     GenderType genderType = avatarCreateDto.getGenderType();
     PublicType publicType = avatarCreateDto.getPublicType();
@@ -54,7 +55,7 @@ public class AvatarService {
 
     Avatar avatarResult = avatarRepository.save(avatar);
 
-    awsS3Util.uploadFileToS3(fileUuid, extension, s3DirectoryType, avatarFile);
+    awsS3Util.uploadUrlFileToS3(fileUuid, extension, s3DirectoryType, avatarUrl);
 
     Member currentMember = sessionUtil.getCurrentMember();
     MemberAsset memberAsset =
