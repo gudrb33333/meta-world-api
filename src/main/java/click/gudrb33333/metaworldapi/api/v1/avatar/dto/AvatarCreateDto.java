@@ -20,9 +20,13 @@ public class AvatarCreateDto {
   @ApiModelProperty(position = 2, value = "공개 여부", allowableValues = "public,private")
   private PublicType publicType;
 
+  @ApiModelProperty(position = 3, value = "생성된 아바타 url")
+  private String avatarUrl;
+
   @Builder
-  public AvatarCreateDto(GenderType genderType, PublicType publicType) {
+  public AvatarCreateDto(GenderType genderType, PublicType publicType, String avatarUrl) {
     this.genderType = genderType;
     this.publicType = publicType;
+    this.avatarUrl = avatarUrl;
   }
 }
