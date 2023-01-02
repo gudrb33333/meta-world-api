@@ -67,7 +67,8 @@ public class Member {
   private Profile profile;
 
   @Builder
-  public Member(String email, String password, LoginType loginType, Role role, Profile profile) {
+  public Member(UUID id, String email, String password, LoginType loginType, Role role, Profile profile) {
+    this.id = id;
     this.email = email;
     this.password = password;
     this.loginType = loginType;
