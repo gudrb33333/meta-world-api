@@ -78,11 +78,13 @@ public abstract class Asset {
   private LocalDateTime updatedAt;
 
   public Asset(
+      UUID id,
       AssetType assetType,
       UUID s3AssetUUID,
       ExtensionType extension,
       S3DirectoryType s3DirectoryType,
       PublicType publicType) {
+    this.id = id;
     this.assetType = assetType;
     this.s3AssetUUID = s3AssetUUID;
     this.extension = extension;
