@@ -52,4 +52,8 @@ public class Profile {
     this.nickname = nickname;
     this.avatar = avatar;
   }
+
+  public void changeAvatar(Avatar avatar) {
+    this.avatar = avatar;
+  }
 }
