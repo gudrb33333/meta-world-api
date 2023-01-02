@@ -2,10 +2,13 @@ package click.gudrb33333.metaworldapi.api.v1.member;
 
 import click.gudrb33333.metaworldapi.api.v1.member.dto.MemberResponseDto;
 import click.gudrb33333.metaworldapi.entity.Member;
+import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.util.SessionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,11 @@ public class MemberController {
   @ApiOperation(value = "로그인된 유저 조회 ", notes = "로그인된 유저를 조회한다.")
   public ResponseEntity<MemberResponseDto> findSigninMember() {
     Member member = sessionUtil.getCurrentMember();
+
+    if(member == null){
+      throw new CatchedException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
+    }
+
     MemberResponseDto memberResponseDto =
         MemberResponseDto.builder().email(member.getEmail()).build();
 
