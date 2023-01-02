@@ -31,13 +31,14 @@ public class Avatar extends Asset {
 
   @Builder
   public Avatar(
+      UUID id,
       AssetType assetType,
       UUID s3AssetUUID,
       ExtensionType extension,
       S3DirectoryType s3DirectoryType,
       PublicType publicType,
       GenderType genderType) {
-    super(assetType, s3AssetUUID, extension, s3DirectoryType, publicType);
+    super(id, assetType, s3AssetUUID, extension, s3DirectoryType, publicType);
     this.genderType = genderType;
   }
 }
