@@ -14,16 +14,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.MimeTypeUtils;
 
-@Slf4j
 public class CustomUsernamePasswordAuthenticationFilter
     extends UsernamePasswordAuthenticationFilter {
-
-  private boolean postOnly = true;
 
   @Override
   public Authentication attemptAuthentication(
       HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-    if (postOnly && !request.getMethod().equals("POST")) {
+    if (!request.getMethod().equals("POST")) {
       throw new AuthenticationServiceException(
           "Authentication method not supported:" + request.getMethod());
     }
@@ -39,8 +36,6 @@ public class CustomUsernamePasswordAuthenticationFilter
           objectMapper.readValue(
               request.getReader().lines().collect(Collectors.joining()), MemberLoginDto.class);
 
-      log.info("[LOGIN_REQUEST] [loginId:{}, password:******]", memberLoginDto.getEmail());
-
       UsernamePasswordAuthenticationToken authRequest =
           new UsernamePasswordAuthenticationToken(
               memberLoginDto.getEmail(), memberLoginDto.getPassword());
@@ -54,8 +49,9 @@ public class CustomUsernamePasswordAuthenticationFilter
     }
   }
 
-  @Override
-  public void setPostOnly(boolean postOnly) {
-    this.postOnly = postOnly;
-  }
+//  //Unused
+//  @Override
+//  public void setPostOnly(boolean postOnly) {
+//    this.postOnly = postOnly;
+//  }
 }

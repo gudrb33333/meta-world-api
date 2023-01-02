@@ -5,7 +5,6 @@ import static click.gudrb33333.metaworldapi.entity.QMemberAsset.memberAsset;
 
 import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
-import click.gudrb33333.metaworldapi.entity.MemberAsset;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;

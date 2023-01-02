@@ -26,8 +26,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
   @Override
   public void onAuthenticationSuccess(
-      HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-      throws IOException, ServletException {
+      HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
     HttpSession session = request.getSession();
     User userSpringSecurity =
