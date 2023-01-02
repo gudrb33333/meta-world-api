@@ -49,7 +49,8 @@ public class MemberAsset {
   private Asset asset;
 
   @Builder
-  public MemberAsset(Member member, Asset asset) {
+  public MemberAsset(UUID id, Member member, Asset asset) {
+    this.id = id;
     this.member = member;
     this.asset = asset;
   }
