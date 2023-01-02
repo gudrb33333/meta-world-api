@@ -13,4 +13,7 @@ public class ErrorMessage {
 
   // INTERNAL_SERVER_ERROR
   public static final String AWS_S3_UTIL_IO_ERROR = "IO error in AwsS3Util.";
+
+  // FORBIDDEN
+  public static final String NOT_FOUND_SESSION = "session not found.";
 }
