@@ -37,12 +37,9 @@ public class ProfileService {
   private final ProfileRepository profileRepository;
   private final AvatarRepository avatarRepository;
   private final MemberRepository memberRepository;
-  private final SessionUtil sessionUtil;
   private final AwsS3Util awsS3Util;
 
-  public void createProfile(ProfileCreateDto profileCreateDto) {
-    Member currentMember = sessionUtil.getCurrentMember();
-
+  public void createProfile(ProfileCreateDto profileCreateDto, Member currentMember) {
     if (currentMember.getProfile() != null) {
       throw new CatchedException(ErrorMessage.CONFLICT_PROFILE, HttpStatus.CONFLICT);
     }
@@ -58,23 +55,22 @@ public class ProfileService {
     Profile profile =
         Profile.builder().nickname(profileCreateDto.getNickname()).avatar(avatar).build();
 
-    profileRepository.save(profile);
+    Profile saveProfile = profileRepository.save(profile);
 
-    currentMember.changeProfile(profile);
+    currentMember.changeProfile(saveProfile);
 
     memberRepository.save(currentMember);
   }
 
-  public ProfileResponseDto findSigninMemberProfile()
+  public ProfileResponseDto findSigninMemberProfile(Member member)
       throws IOException, ParseException, CloudFrontServiceException {
-    Member member = sessionUtil.getCurrentMember();
     Profile memberProfile = member.getProfile();
 
     if (memberProfile == null) {
       throw new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
     }
 
-    Profile profile =
+    memberProfile =
         profileRepository
             .findById(memberProfile.getId())
             .orElseThrow(
@@ -83,10 +79,10 @@ public class ProfileService {
                 });
 
     String signedAvatarUrl =
-        awsS3Util.createSignedUrl(S3DirectoryType.AVATAR, profile.getAvatar().getS3AssetUUID());
+        awsS3Util.createSignedUrl(S3DirectoryType.AVATAR, memberProfile.getAvatar().getS3AssetUUID());
 
     return ProfileResponseDto.builder()
-        .nickname(profile.getNickname())
+        .nickname(memberProfile.getNickname())
         .signedAvatarUrl(signedAvatarUrl)
         .build();
   }
