@@ -53,13 +53,14 @@ public class AvatarService {
             .publicType(publicType)
             .build();
 
-    Avatar avatarResult = avatarRepository.save(avatar);
+    Avatar saveAvatar = avatarRepository.save(avatar);
 
     awsS3Util.uploadUrlFileToS3(fileUuid, extension, s3DirectoryType, avatarUrl);
 
-    Member currentMember = sessionUtil.getCurrentMember();
+    Member currentMember =sessionUtil.getCurrentMember();
+
     MemberAsset memberAsset =
-        MemberAsset.builder().asset(avatarResult).member(currentMember).build();
+        MemberAsset.builder().asset(saveAvatar).member(currentMember).build();
 
     memberAssetRepository.save(memberAsset);
   }
