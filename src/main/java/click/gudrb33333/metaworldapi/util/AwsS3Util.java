@@ -30,7 +30,6 @@ import org.jets3t.service.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
@@ -79,7 +78,7 @@ public class AwsS3Util {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     dateFormat.setTimeZone(timeZone);
     Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.MINUTE, 1);
+    calendar.add(Calendar.MINUTE, 30);
     Date date = new Date(calendar.getTimeInMillis());
     String nowAsISO = dateFormat.format(date);
 
