@@ -25,11 +25,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final CorsConfig corsConfig;
 
   private static final String[] PERMIT_ALL_LIST = {
-    "/health", "/swagger*/**", "/v3/api-docs", "/api/v1/auth/signup", "/api/v1/auth/signin",
+    "/health",
+    "/swagger*/**",
+    "/v3/api-docs",
+    "/api/v1/auth/signup",
+    "/api/v1/auth/signin",
+    "/api/v1/members/me",
   };
-  private static final String[] PERMIT_ADMIN_AND_MEMBER_LIST = {
-    "/api/v1/auth/logout",
-  };
+  private static final String[] PERMIT_ADMIN_AND_MEMBER_LIST = {"/api/v1/auth/logout"};
   private static final String[] PERMIT_ADMIN_LIST = {};
   private final String roleAdmin = String.valueOf(Role.ADMIN);
   private final String roleMember = String.valueOf(Role.MEMBER);
@@ -74,20 +77,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     auth.userDetailsService(authService).passwordEncoder(passwordEncoderUtil.passwordEncoder());
   }
 
-  protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() {
+  protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() throws Exception {
     CustomUsernamePasswordAuthenticationFilter authFilter =
         new CustomUsernamePasswordAuthenticationFilter();
 
-    try {
-      authFilter.setFilterProcessesUrl("/api/v1/auth/signin");
-      authFilter.setAuthenticationManager(this.authenticationManagerBean());
-      authFilter.setUsernameParameter("email");
-      authFilter.setPasswordParameter("password");
-      authFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    authFilter.setFilterProcessesUrl("/api/v1/auth/signin");
+    authFilter.setAuthenticationManager(this.authenticationManagerBean());
+    authFilter.setUsernameParameter("email");
+    authFilter.setPasswordParameter("password");
+    authFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
 
     return authFilter;
   }
