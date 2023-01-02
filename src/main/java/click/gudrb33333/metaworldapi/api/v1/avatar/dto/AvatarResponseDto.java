@@ -20,7 +20,7 @@ public class AvatarResponseDto {
   private UUID s3AssetUUID;
   private ExtensionType extension;
   private S3DirectoryType s3DirectoryType;
-  private PublicType publicTyp;
+  private PublicType publicType;
   private GenderType genderType;
 
   @Builder
@@ -37,7 +37,7 @@ public class AvatarResponseDto {
     this.s3AssetUUID = s3AssetUUID;
     this.extension = extension;
     this.s3DirectoryType = s3DirectoryType;
-    this.publicTyp = publicType;
+    this.publicType = publicType;
     this.genderType = genderType;
   }
 }
