@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,21 +29,20 @@ public class AuthController {
 
   @PostMapping("/signup")
   @ApiOperation(value = "유저 회원가입", notes = "유저 회원가입을 한다.")
-  public ResponseEntity<Object> signup(@Valid @RequestBody MemberCreateDto memberCreateDto)
-      throws Exception {
+  public ResponseEntity<Object> signup(@Valid @RequestBody MemberCreateDto memberCreateDto) {
     authService.signup(memberCreateDto);
-    return ResponseEntity.ok().body("OK");
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PostMapping("/signin")
   @ApiOperation(value = "유저 로그인", notes = "로그인을 한다.")
-  public void signin(@Valid @RequestBody MemberLoginDto MemberLoginDto) throws Exception {
+  public void signin(@Valid @RequestBody MemberLoginDto MemberLoginDto) {
     // use spring security - (WebSecurityConfig,AuthService(loadUserByUsername))
   }
 
   @DeleteMapping(value="/logout")
   @ApiOperation(value = "유저 로그아웃", notes = "로그아웃을 한다.")
-  public ResponseEntity<Object> logout(@ApiIgnore HttpSession session) throws Exception{
+  public ResponseEntity<Object> logout(@ApiIgnore HttpSession session) {
     session.invalidate();
     return ResponseEntity.ok().body("OK");
   }
