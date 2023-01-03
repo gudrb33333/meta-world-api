@@ -55,9 +55,9 @@ public class ProfileService {
     Profile profile =
         Profile.builder().nickname(profileCreateDto.getNickname()).avatar(avatar).build();
 
-    Profile saveProfile = profileRepository.save(profile);
+    Profile savedProfile = profileRepository.save(profile);
 
-    currentMember.changeProfile(saveProfile);
+    currentMember.changeProfile(savedProfile);
 
     memberRepository.save(currentMember);
   }
@@ -79,7 +79,8 @@ public class ProfileService {
                 });
 
     String signedAvatarUrl =
-        awsS3Util.createSignedUrl(S3DirectoryType.AVATAR, memberProfile.getAvatar().getS3AssetUUID());
+        awsS3Util.createSignedUrl(
+            S3DirectoryType.AVATAR, memberProfile.getAvatar().getS3AssetUUID());
 
     return ProfileResponseDto.builder()
         .nickname(memberProfile.getNickname())
