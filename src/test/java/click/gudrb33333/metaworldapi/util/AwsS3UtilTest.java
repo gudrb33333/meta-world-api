@@ -23,6 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 class AwsS3UtilTest {
@@ -33,6 +34,16 @@ class AwsS3UtilTest {
 
   @Test
   void uploadUrlFileToS3() {
+    UUID fileUuid = UUID.randomUUID();
+    ExtensionType extension = ExtensionType.GLB;
+    S3DirectoryType s3DirectoryType = S3DirectoryType.CLOTHING;
+    String url = "https://meta-world.gudrb33333.click/favicon.ico";
+
+    awsS3Util.uploadUrlFileToS3(fileUuid, extension, s3DirectoryType, url);
+  }
+
+  @Test
+  void uploadUrlFileToS3ThrowIOException() {
     UUID fileUuid = UUID.randomUUID();
     ExtensionType extension = ExtensionType.GLB;
     S3DirectoryType s3DirectoryType = S3DirectoryType.AVATAR;
@@ -47,24 +58,32 @@ class AwsS3UtilTest {
   }
 
   @Test
-  void uploadUrlFileToS32() throws IOException {
-//    String bucketName = "testBuket";
-//    String storeFileName = "testStoreFileName";
-//
-//    UUID fileUuid = UUID.randomUUID();
-//    ExtensionType extension = ExtensionType.GLB;
-//    S3DirectoryType s3DirectoryType = S3DirectoryType.AVATAR;
-//    String url = "https://test.com";
-//    InputStream inputStream = new BufferedInputStream(new URL("https://meta-world.gudrb33333.click/assets/AdobeStock_191213422_11zon.jpeg").openStream());
+  void uploadLocalFileToS3() {
+    UUID fileUuid = UUID.randomUUID();
+    ExtensionType extension = ExtensionType.GLB;
+    S3DirectoryType s3DirectoryType = S3DirectoryType.CLOTHING;
+    MockMultipartFile testFile =
+        new MockMultipartFile("multipartFile", "filename.txt", "text/plain", "some xml".getBytes());
 
-//    willDoNothing().willThrow(new IOException()).given(
-//        amazonS3Client
-//    ).putObject(
-//        new PutObjectRequest(
-//            bucketName + s3DirectoryType.getValue(), storeFileName, inputStream, null)
-//            .withCannedAcl(CannedAccessControlList.PublicRead));
+    awsS3Util.uploadLocalFileToS3(fileUuid, extension, s3DirectoryType, testFile);
+  }
 
-//    awsS3Util.uploadUrlFileToS3(fileUuid, extension, s3DirectoryType, url);
+  @Test
+  void uploadLocalFileToS3ThrowIOException() {
+    UUID fileUuid = UUID.randomUUID();
+    ExtensionType extension = ExtensionType.GLB;
+    S3DirectoryType s3DirectoryType = S3DirectoryType.CLOTHING;
+    IOExceptionMockMultipartFile ioExceptionTestFile =
+        new IOExceptionMockMultipartFile(
+            "multipartFile", "filename.txt", "text/plain", (byte[]) null);
+
+    assertThatThrownBy(
+            () -> {
+              awsS3Util.uploadLocalFileToS3(
+                  fileUuid, extension, s3DirectoryType, ioExceptionTestFile);
+            })
+        .isInstanceOf(CatchedException.class)
+        .hasMessageContaining(ErrorMessage.AWS_S3_UTIL_IO_ERROR);
   }
 
   @Test
@@ -79,5 +98,19 @@ class AwsS3UtilTest {
     assertThat(signUrl).contains(".glb");
     assertThat(signUrl).contains("?Policy=");
     assertThat(signUrl).contains("&Key-Pair-Id");
+  }
+
+  private class IOExceptionMockMultipartFile extends MockMultipartFile {
+
+    public IOExceptionMockMultipartFile(
+        String name, String originalFilename, String contentType, byte[] content) {
+      super(name, originalFilename, contentType, content);
+    }
+
+    // Method is overrided, so that it throws an IOException, when it's called
+    @Override
+    public InputStream getInputStream() throws IOException {
+      throw new IOException();
+    }
   }
 }
