@@ -96,13 +96,13 @@ class AvatarServiceTest {
     @Test
     @WithAuthMember(email = "test@test.com", role = Role.MEMBER)
     void whenNotFoundMember() {
-      UUID mockAssetId = UUID.randomUUID();
+      UUID testAssetId = UUID.randomUUID();
 
-      given(avatarRepository.findById(mockAssetId)).willReturn(Optional.empty());
+      given(avatarRepository.findById(testAssetId)).willReturn(Optional.empty());
 
       assertThatThrownBy(
               () -> {
-                avatarService.findOneAvatar(mockAssetId);
+                avatarService.findOneAvatar(testAssetId);
               })
           .isInstanceOf(CatchedException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_AVATAR);
@@ -111,10 +111,10 @@ class AvatarServiceTest {
     @Test
     @WithAuthMember(email = "test@test.com", role = Role.MEMBER)
     void whenFoundMember() {
-      UUID mockAssetId = UUID.randomUUID();
-      Avatar mockAvatar =
+      UUID testAssetId = UUID.randomUUID();
+      Avatar testAvatar =
           Avatar.builder()
-              .id(mockAssetId)
+              .id(testAssetId)
               .assetType(AssetType.AVATAR)
               .extension(ExtensionType.GLB)
               .genderType(GenderType.MALE)
@@ -123,17 +123,17 @@ class AvatarServiceTest {
               .s3DirectoryType(S3DirectoryType.AVATAR)
               .build();
 
-      given(avatarRepository.findById(mockAssetId)).willReturn(Optional.of(mockAvatar));
+      given(avatarRepository.findById(testAssetId)).willReturn(Optional.of(testAvatar));
 
-      AvatarResponseDto findAvatar = avatarService.findOneAvatar(mockAssetId);
+      AvatarResponseDto testFindAvatar = avatarService.findOneAvatar(testAssetId);
 
-      assertThat(mockAvatar.getId()).isEqualTo(findAvatar.getAssetId());
-      assertThat(mockAvatar.getAssetType()).isEqualTo(findAvatar.getAssetType());
-      assertThat(mockAvatar.getExtension()).isEqualTo(findAvatar.getExtension());
-      assertThat(mockAvatar.getGenderType()).isEqualTo(findAvatar.getGenderType());
-      assertThat(mockAvatar.getPublicType()).isEqualTo(findAvatar.getPublicType());
-      assertThat(mockAvatar.getS3AssetUUID()).isEqualTo(findAvatar.getS3AssetUUID());
-      assertThat(mockAvatar.getS3DirectoryType()).isEqualTo(findAvatar.getS3DirectoryType());
+      assertThat(testAvatar.getId()).isEqualTo(testFindAvatar.getAssetId());
+      assertThat(testAvatar.getAssetType()).isEqualTo(testFindAvatar.getAssetType());
+      assertThat(testAvatar.getExtension()).isEqualTo(testFindAvatar.getExtension());
+      assertThat(testAvatar.getGenderType()).isEqualTo(testFindAvatar.getGenderType());
+      assertThat(testAvatar.getPublicType()).isEqualTo(testFindAvatar.getPublicType());
+      assertThat(testAvatar.getS3AssetUUID()).isEqualTo(testFindAvatar.getS3AssetUUID());
+      assertThat(testAvatar.getS3DirectoryType()).isEqualTo(testFindAvatar.getS3DirectoryType());
     }
   }
 }
