@@ -52,7 +52,7 @@ class ClothingServiceTest {
             .serialNumber("testSerialNumber")
             .build();
 
-    Clothing saveTestClothing =
+    Clothing savedTestClothing =
         Clothing.builder()
             .id(UUID.randomUUID())
             .assetType(AssetType.CLOTHING)
@@ -72,13 +72,13 @@ class ClothingServiceTest {
     MockMultipartFile testFile =
         new MockMultipartFile("multipartFile", "filename.txt", "text/plain", "some xml".getBytes());
 
-    given(clothingRepository.save(any(Clothing.class))).willReturn(saveTestClothing);
+    given(clothingRepository.save(any(Clothing.class))).willReturn(savedTestClothing);
 
     MemberAsset saveTestMemberAsset =
         MemberAsset.builder()
             .id(UUID.randomUUID())
             .member(testMember)
-            .asset(saveTestClothing)
+            .asset(savedTestClothing)
             .build();
 
     given(memberAssetRepository.save(any(MemberAsset.class))).willReturn(saveTestMemberAsset);
@@ -86,6 +86,6 @@ class ClothingServiceTest {
     clothingService.createClothing(testClothingCreateDto, testFile, testMember);
 
     assertThat(saveTestMemberAsset.getMember()).isEqualTo(testMember);
-    assertThat(saveTestMemberAsset.getAsset()).isEqualTo(saveTestClothing);
+    assertThat(saveTestMemberAsset.getAsset()).isEqualTo(savedTestClothing);
   }
 }
