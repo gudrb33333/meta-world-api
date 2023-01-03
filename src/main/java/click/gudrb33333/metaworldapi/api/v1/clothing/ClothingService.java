@@ -53,13 +53,13 @@ public class ClothingService {
             .serialNumber(clothingCreateDto.getSerialNumber())
             .build();
 
-    Clothing saveClothing = clothingRepository.save(clothing);
+    Clothing savedClothing = clothingRepository.save(clothing);
 
     awsS3Util.uploadLocalFileToS3(
         fileUuid, ExtensionType.GLB, S3DirectoryType.CLOTHING, multipartFile);
 
     MemberAsset memberAsset =
-        MemberAsset.builder().member(sessionMember).asset(saveClothing).build();
+        MemberAsset.builder().member(sessionMember).asset(savedClothing).build();
 
     memberAssetRepository.save(memberAsset);
   }
