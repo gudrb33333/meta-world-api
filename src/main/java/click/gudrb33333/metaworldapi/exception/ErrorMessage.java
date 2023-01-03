@@ -10,6 +10,7 @@ public class ErrorMessage {
   public static final String NOT_FOUND_MEMBER = "member not found.";
   public static final String NOT_FOUND_AVATAR = "avatar not found.";
   public static final String NOT_FOUND_PROFILE = "profile not found.";
+  public static final String NOT_FOUND_CLOTHING = "clothing not found.";
 
   // INTERNAL_SERVER_ERROR
   public static final String AWS_S3_UTIL_IO_ERROR = "IO error in AwsS3Util.";
