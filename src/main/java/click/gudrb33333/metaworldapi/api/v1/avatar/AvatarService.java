@@ -29,38 +29,30 @@ public class AvatarService {
 
   private final AvatarRepository avatarRepository;
   private final MemberAssetRepository memberAssetRepository;
-  private final SessionUtil sessionUtil;
   private final AwsS3Util awsS3Util;
 
   @Transactional(rollbackFor = Exception.class)
-  public void createAvatar(AvatarCreateDto avatarCreateDto) throws IOException {
+  public void createAvatar(AvatarCreateDto avatarCreateDto, Member sessionMember)
+      throws IOException {
 
     UUID fileUuid = UUID.randomUUID();
     String avatarUrl = avatarCreateDto.getAvatarUrl();
-    AssetType assetType = AssetType.AVATAR;
-    ExtensionType extension = ExtensionType.GLB;
-    S3DirectoryType s3DirectoryType = S3DirectoryType.AVATAR;
-    GenderType genderType = avatarCreateDto.getGenderType();
-    PublicType publicType = avatarCreateDto.getPublicType();
 
     Avatar avatar =
         Avatar.builder()
-            .assetType(assetType)
+            .assetType(AssetType.AVATAR)
             .s3AssetUUID(fileUuid)
-            .extension(extension)
-            .s3DirectoryType(s3DirectoryType)
-            .genderType(genderType)
-            .publicType(publicType)
+            .extension(ExtensionType.GLB)
+            .s3DirectoryType(S3DirectoryType.AVATAR)
+            .genderType(avatarCreateDto.getGenderType())
+            .publicType(avatarCreateDto.getPublicType())
             .build();
 
     Avatar saveAvatar = avatarRepository.save(avatar);
 
-    awsS3Util.uploadUrlFileToS3(fileUuid, extension, s3DirectoryType, avatarUrl);
+    awsS3Util.uploadUrlFileToS3(fileUuid, ExtensionType.GLB, S3DirectoryType.AVATAR, avatarUrl);
 
-    Member currentMember =sessionUtil.getCurrentMember();
-
-    MemberAsset memberAsset =
-        MemberAsset.builder().asset(saveAvatar).member(currentMember).build();
+    MemberAsset memberAsset = MemberAsset.builder().asset(saveAvatar).member(sessionMember).build();
 
     memberAssetRepository.save(memberAsset);
   }

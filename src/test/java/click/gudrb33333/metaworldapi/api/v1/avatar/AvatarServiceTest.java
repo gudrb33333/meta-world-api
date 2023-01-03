@@ -48,47 +48,46 @@ class AvatarServiceTest {
 
   @Test
   void createAvatar() throws IOException {
-    Member mockMember =
+    Member testMember =
         Member.builder()
             .email("test@test.com")
             .build();
 
-    AvatarCreateDto mockAvatarCreateDto =
+    AvatarCreateDto testAvatarCreateDto =
         AvatarCreateDto.builder()
             .avatarUrl("testUrl")
             .publicType(PublicType.PRIVATE)
             .genderType(GenderType.MALE)
             .build();
 
-    UUID mockFileUuid = UUID.randomUUID();
-    String mockAvatarUrl = mockAvatarCreateDto.getAvatarUrl();
-    AssetType mockAssetType = AssetType.AVATAR;
-    ExtensionType mockExtension = ExtensionType.GLB;
-    S3DirectoryType mockS3DirectoryType = S3DirectoryType.AVATAR;
-    GenderType mockGenderType = mockAvatarCreateDto.getGenderType();
-    PublicType mockPublicType = mockAvatarCreateDto.getPublicType();
+    UUID testFileUuid = UUID.randomUUID();
+    String testAvatarUrl = testAvatarCreateDto.getAvatarUrl();
+    AssetType testAssetType = AssetType.AVATAR;
+    ExtensionType testExtension = ExtensionType.GLB;
+    S3DirectoryType testS3DirectoryType = S3DirectoryType.AVATAR;
+    GenderType testGenderType = testAvatarCreateDto.getGenderType();
+    PublicType testPublicType = testAvatarCreateDto.getPublicType();
 
-    Avatar mockAvatar =
+    Avatar testAvatar =
         Avatar.builder()
-            .assetType(mockAssetType)
-            .s3AssetUUID(mockFileUuid)
-            .extension(mockExtension)
-            .s3DirectoryType(mockS3DirectoryType)
-            .genderType(mockGenderType)
-            .publicType(mockPublicType)
+            .assetType(testAssetType)
+            .s3AssetUUID(testFileUuid)
+            .extension(testExtension)
+            .s3DirectoryType(testS3DirectoryType)
+            .genderType(testGenderType)
+            .publicType(testPublicType)
             .build();
 
-    MemberAsset mockMemberAsset =
+    MemberAsset testMemberAsset =
         MemberAsset.builder()
-            .asset(mockAvatar)
-            .member(mockMember)
+            .asset(testAvatar)
+            .member(testMember)
             .build();
 
-    given(avatarRepository.save(any(Avatar.class))).willReturn(mockAvatar);
-    given(sessionUtil.getCurrentMember()).willReturn(mockMember);
-    given(memberAssetRepository.save(any(MemberAsset.class))).willReturn(mockMemberAsset);
+    given(avatarRepository.save(any(Avatar.class))).willReturn(testAvatar);
+    given(memberAssetRepository.save(any(MemberAsset.class))).willReturn(testMemberAsset);
 
-    avatarService.createAvatar(mockAvatarCreateDto);
+    avatarService.createAvatar(testAvatarCreateDto, testMember);
   }
 
   @Nested

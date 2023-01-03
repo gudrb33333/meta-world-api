@@ -2,6 +2,8 @@ package click.gudrb33333.metaworldapi.api.v1.avatar;
 
 import click.gudrb33333.metaworldapi.api.v1.avatar.dto.AvatarCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.avatar.dto.AvatarResponseDto;
+import click.gudrb33333.metaworldapi.entity.Member;
+import click.gudrb33333.metaworldapi.util.SessionUtil;
 import io.swagger.annotations.Api;
 import java.io.IOException;
 import java.util.UUID;
@@ -23,11 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AvatarController {
 
   private final AvatarService avatarService;
+  private final SessionUtil sessionUtil;
 
   @PostMapping
   public ResponseEntity<String> create(
       @Valid @RequestBody AvatarCreateDto avatarCreateDto) throws IOException {
-    avatarService.createAvatar(avatarCreateDto);
+    Member sessionMember = sessionUtil.getCurrentMember();
+    avatarService.createAvatar(avatarCreateDto, sessionMember);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
