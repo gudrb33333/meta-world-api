@@ -153,7 +153,7 @@ class ProfileServiceTest {
 
       given(profileRepository.findById(testProfile.getId())).willReturn(
           Optional.of(testProfile));
-      given(awsS3Util.createSignedUrl(S3DirectoryType.AVATAR, testAvatar.getS3AssetUUID()))
+      given(awsS3Util.createSignedUrl(S3DirectoryType.AVATAR, testAvatar.getS3AssetUUID(), 3600))
           .willReturn("testSignedAvatarUrl");
 
       ProfileResponseDto profileResponseDto = profileService.findSigninMemberProfile(testMember);

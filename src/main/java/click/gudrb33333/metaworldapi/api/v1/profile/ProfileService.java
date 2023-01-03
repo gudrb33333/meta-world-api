@@ -80,7 +80,7 @@ public class ProfileService {
 
     String signedAvatarUrl =
         awsS3Util.createSignedUrl(
-            S3DirectoryType.AVATAR, memberProfile.getAvatar().getS3AssetUUID());
+            S3DirectoryType.AVATAR, memberProfile.getAvatar().getS3AssetUUID(), 3600);
 
     return ProfileResponseDto.builder()
         .nickname(memberProfile.getNickname())

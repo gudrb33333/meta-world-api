@@ -86,7 +86,7 @@ public class AwsS3Util {
     }
   }
 
-  public String createSignedUrl(S3DirectoryType s3DirectoryType, UUID objectUuid)
+  public String createSignedUrl(S3DirectoryType s3DirectoryType, UUID objectUuid, int expiredSecond)
       throws IOException, ParseException, CloudFrontServiceException {
     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
@@ -101,7 +101,7 @@ public class AwsS3Util {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     dateFormat.setTimeZone(timeZone);
     Calendar calendar = Calendar.getInstance();
-    calendar.add(Calendar.MINUTE, 30);
+    calendar.add(Calendar.SECOND, expiredSecond);
     Date date = new Date(calendar.getTimeInMillis());
     String nowAsISO = dateFormat.format(date);
 

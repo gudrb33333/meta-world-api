@@ -161,7 +161,7 @@ class ClothingServiceTest {
         given(memberAssetRepository.findByMemberAndAsset(testMember, testClothing))
             .willReturn(Optional.of(testMemberAsset));
 
-        given(awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, testUUID))
+        given(awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, testUUID, 86400))
             .willReturn("testSignedUrl");
 
         ClothingResponseDto clothingResponseDto =
@@ -189,7 +189,7 @@ class ClothingServiceTest {
 
       given(clothingRepository.findById(testUUID)).willReturn(Optional.of(testClothing));
 
-      given(awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, testUUID))
+      given(awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, testUUID, 86400))
           .willReturn("testSignedUrl");
 
       ClothingResponseDto clothingResponseDto =

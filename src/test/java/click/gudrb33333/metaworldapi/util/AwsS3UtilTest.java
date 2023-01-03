@@ -89,9 +89,10 @@ class AwsS3UtilTest {
   @Test
   void createSignedUrl() throws Exception {
     S3DirectoryType testS3DirectoryType = S3DirectoryType.AVATAR;
-    UUID objectUuid = UUID.randomUUID();
+    UUID testObjectUUID = UUID.randomUUID();
+    int testExpiredSecond = 3600;
 
-    String signUrl = awsS3Util.createSignedUrl(testS3DirectoryType, objectUuid);
+    String signUrl = awsS3Util.createSignedUrl(testS3DirectoryType, testObjectUUID, testExpiredSecond);
 
     assertThat(signUrl).contains("https://");
     assertThat(signUrl).contains("/avatar");
