@@ -1,17 +1,25 @@
 package click.gudrb33333.metaworldapi.api.v1.clothing;
 
 import click.gudrb33333.metaworldapi.api.v1.clothing.dto.ClothingCreateDto;
+import click.gudrb33333.metaworldapi.api.v1.clothing.dto.ClothingResponseDto;
 import click.gudrb33333.metaworldapi.entity.Clothing;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.MemberAsset;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
+import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
+import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.ClothingRepository;
 import click.gudrb33333.metaworldapi.repository.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.jets3t.service.CloudFrontServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,5 +62,38 @@ public class ClothingService {
         MemberAsset.builder().member(sessionMember).asset(saveClothing).build();
 
     memberAssetRepository.save(memberAsset);
+  }
+
+  public ClothingResponseDto findOneClothing(UUID uuid, Member sessionMember)
+      throws IOException, ParseException, CloudFrontServiceException {
+    Clothing clothing =
+        clothingRepository
+            .findById(uuid)
+            .orElseThrow(
+                () -> {
+                  throw new CatchedException(ErrorMessage.NOT_FOUND_CLOTHING, HttpStatus.NOT_FOUND);
+                });
+
+    if (clothing.getPublicType() != PublicType.PUBLIC) {
+      memberAssetRepository
+          .findByMemberAndAsset(sessionMember, clothing)
+          .orElseThrow(
+              () -> {
+                throw new CatchedException(HttpStatus.FORBIDDEN.toString(), HttpStatus.FORBIDDEN);
+              });
+    }
+
+    String signedUrl = awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, uuid);
+
+    return ClothingResponseDto.builder()
+        .id(clothing.getId())
+        .brand(clothing.getBrand())
+        .detailDescription(clothing.getDetailDescription())
+        .name(clothing.getName())
+        .signedClothingUrl(signedUrl)
+        .price(clothing.getPrice())
+        .serialNumber(clothing.getSerialNumber())
+        .associateLink(clothing.getAssociateLink())
+        .build();
   }
 }
