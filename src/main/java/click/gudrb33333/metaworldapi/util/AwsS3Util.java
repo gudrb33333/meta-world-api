@@ -30,6 +30,7 @@ import org.jets3t.service.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
@@ -48,7 +49,6 @@ public class AwsS3Util {
 
   public void uploadUrlFileToS3(
       UUID fileUuid, ExtensionType extension, S3DirectoryType s3DirectoryType, String url) {
-
     String storeFileName = fileUuid + "." + extension.getValue();
 
     // TODO: fix no content length
@@ -56,6 +56,29 @@ public class AwsS3Util {
       amazonS3Client.putObject(
           new PutObjectRequest(
                   bucketName + s3DirectoryType.getValue(), storeFileName, inputStream, null)
+              .withCannedAcl(CannedAccessControlList.PublicRead));
+    } catch (IOException e) {
+      throw new CatchedException(
+          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  public void uploadLocalFileToS3(
+      UUID fileUuid,
+      ExtensionType extension,
+      S3DirectoryType s3DirectoryType,
+      MultipartFile multipartFile) {
+    ObjectMetadata objectMetadata = new ObjectMetadata();
+    objectMetadata.setContentType(multipartFile.getContentType());
+    String storeFileName = fileUuid + "." + extension.getValue();
+
+    try (InputStream inputStream = multipartFile.getInputStream()) {
+      amazonS3Client.putObject(
+          new PutObjectRequest(
+                  bucketName + s3DirectoryType.getValue(),
+                  storeFileName,
+                  inputStream,
+                  objectMetadata)
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
       throw new CatchedException(
