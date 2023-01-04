@@ -22,7 +22,7 @@ public class ClothingCreateDto {
   @ApiModelProperty(position = 3, value = "품번")
   private String serialNumber;
 
-  @ApiModelProperty(position = 4, value = "성별", allowableValues = "male,female")
+  @ApiModelProperty(position = 4, value = "성별", allowableValues = "male,female,both")
   private GenderType genderType;
 
   @ApiModelProperty(position = 5, value = "가격")

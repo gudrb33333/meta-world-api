@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum GenderType implements BaseEnum<String> {
   MALE("male"),
-  FEMALE("female");
+  FEMALE("female"),
+  BOTH("both");
 
   private final String genderType;
 
