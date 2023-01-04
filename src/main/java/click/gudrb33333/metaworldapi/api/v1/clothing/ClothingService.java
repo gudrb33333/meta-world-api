@@ -94,6 +94,7 @@ public class ClothingService {
         .price(clothing.getPrice())
         .serialNumber(clothing.getSerialNumber())
         .associateLink(clothing.getAssociateLink())
+        .genderType(clothing.getGenderType())
         .build();
   }
 }

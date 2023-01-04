@@ -1,5 +1,6 @@
 package click.gudrb33333.metaworldapi.api.v1.clothing.dto;
 
+import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,6 +21,8 @@ public class ClothingResponseDto {
 
   private String serialNumber;
 
+  private GenderType genderType;
+
   private int price;
 
   private String associateLink;
@@ -33,6 +36,7 @@ public class ClothingResponseDto {
       String name,
       String brand,
       String serialNumber,
+      GenderType genderType,
       int price,
       String associateLink,
       String detailDescription) {
@@ -41,6 +45,7 @@ public class ClothingResponseDto {
     this.name = name;
     this.brand = brand;
     this.serialNumber = serialNumber;
+    this.genderType = genderType;
     this.price = price;
     this.associateLink = associateLink;
     this.detailDescription = detailDescription;
