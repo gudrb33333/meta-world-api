@@ -83,7 +83,7 @@ public class ClothingService {
               });
     }
 
-    String signedUrl = awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, uuid, 86400);
+    String signedUrl = awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, clothing.getS3AssetUUID(), 86400);
 
     return ClothingResponseDto.builder()
         .id(clothing.getId())

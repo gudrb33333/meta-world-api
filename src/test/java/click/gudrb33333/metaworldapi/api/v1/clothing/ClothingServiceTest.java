@@ -123,6 +123,7 @@ class ClothingServiceTest {
       Clothing testClothing =
           Clothing.builder()
               .id(testUUID)
+              .s3AssetUUID(UUID.randomUUID())
               .publicType(PublicType.PRIVATE)
               .brand("testBrand")
               .detailDescription("testDetailDescription")
@@ -161,7 +162,9 @@ class ClothingServiceTest {
         given(memberAssetRepository.findByMemberAndAsset(testMember, testClothing))
             .willReturn(Optional.of(testMemberAsset));
 
-        given(awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, testUUID, 86400))
+        given(
+                awsS3Util.createSignedUrl(
+                    S3DirectoryType.CLOTHING, testClothing.getS3AssetUUID(), 86400))
             .willReturn("testSignedUrl");
 
         ClothingResponseDto clothingResponseDto =
@@ -178,6 +181,7 @@ class ClothingServiceTest {
       Clothing testClothing =
           Clothing.builder()
               .id(testUUID)
+              .s3AssetUUID(UUID.randomUUID())
               .publicType(PublicType.PUBLIC)
               .brand("testBrand")
               .detailDescription("testDetailDescription")
@@ -189,7 +193,9 @@ class ClothingServiceTest {
 
       given(clothingRepository.findById(testUUID)).willReturn(Optional.of(testClothing));
 
-      given(awsS3Util.createSignedUrl(S3DirectoryType.CLOTHING, testUUID, 86400))
+      given(
+              awsS3Util.createSignedUrl(
+                  S3DirectoryType.CLOTHING, testClothing.getS3AssetUUID(), 86400))
           .willReturn("testSignedUrl");
 
       ClothingResponseDto clothingResponseDto =
