@@ -1,0 +1,1 @@
+ALTER TABLE profiles MODIFY COLUMN asset_id char(36) NOT NULL;
