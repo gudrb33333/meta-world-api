@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
+import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.Profile;
@@ -49,8 +50,7 @@ class ProfileServiceTest {
   @Nested
   class createProfile {
 
-    ProfileCreateDto testProfileCreateDto =
-        ProfileCreateDto.builder().nickname("testName").build();
+    ProfileCreateDto testProfileCreateDto = ProfileCreateDto.builder().nickname("testName").build();
 
     Member testMember = Member.builder().email("test@test.com").build();
 
@@ -151,8 +151,7 @@ class ProfileServiceTest {
       testProfile.changeAvatar(testAvatar);
       testMember.changeProfile(testProfile);
 
-      given(profileRepository.findById(testProfile.getId())).willReturn(
-          Optional.of(testProfile));
+      given(profileRepository.findById(testProfile.getId())).willReturn(Optional.of(testProfile));
       given(awsS3Util.createSignedUrl(S3DirectoryType.AVATAR, testAvatar.getS3AssetUUID(), 3600))
           .willReturn("testSignedAvatarUrl");
 
@@ -160,6 +159,89 @@ class ProfileServiceTest {
 
       assertThat(testProfile.getNickname()).isEqualTo(profileResponseDto.getNickname());
       assertThat("testSignedAvatarUrl").isEqualTo(profileResponseDto.getSignedAvatarUrl());
+    }
+  }
+
+  @Nested
+  class updateProfile {
+
+    ProfileUpdateDto testProfileUpdateDto = ProfileUpdateDto.builder().nickname("testName").build();
+
+    Member testMember = Member.builder().email("test@test.com").build();
+    Profile testProfile = Profile.builder().nickname("testName").build();
+
+    Avatar testAvatar =
+        Avatar.builder()
+            .id(UUID.randomUUID())
+            .assetType(AssetType.AVATAR)
+            .s3AssetUUID(UUID.randomUUID())
+            .extension(ExtensionType.GLB)
+            .s3DirectoryType(S3DirectoryType.AVATAR)
+            .genderType(GenderType.MALE)
+            .publicType(PublicType.PRIVATE)
+            .build();
+
+    @Test
+    void whenCurrentMemberDoseNotHaveProfile() {
+      assertThatThrownBy(
+              () -> {
+                profileService.updateProfile(testProfileUpdateDto, testMember);
+              })
+          .isInstanceOf(CatchedException.class)
+          .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
+    }
+
+    @Test
+    void whenProfileNotFound() {
+      testMember.changeProfile(testProfile);
+
+      given(profileRepository.findById(testMember.getProfile().getId()))
+          .willReturn(Optional.empty());
+
+      assertThatThrownBy(
+              () -> {
+                profileService.updateProfile(testProfileUpdateDto, testMember);
+              })
+          .isInstanceOf(CatchedException.class)
+          .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
+    }
+
+    @Test
+    void whenMemberDoesNotHaveAvatar() {
+      testMember.changeProfile(testProfile);
+
+      given(profileRepository.findById(testMember.getProfile().getId()))
+          .willReturn(Optional.of(testProfile));
+      given(avatarRepository.findOneMemberAvatar(testMember)).willReturn(Optional.empty());
+
+      assertThatThrownBy(
+              () -> {
+                profileService.updateProfile(testProfileUpdateDto, testMember);
+              })
+          .isInstanceOf(CatchedException.class)
+          .hasMessageContaining(ErrorMessage.NOT_FOUND_AVATAR);
+    }
+
+    @Test
+    void whenMemberHaveAvatar() {
+      Profile testSavedProfile =
+          Profile.builder()
+              .id(UUID.randomUUID())
+              .nickname(testProfileUpdateDto.getNickname())
+              .avatar(testAvatar)
+              .build();
+
+      testMember.changeProfile(testProfile);
+
+      given(profileRepository.findById(testMember.getProfile().getId()))
+          .willReturn(Optional.of(testProfile));
+      given(avatarRepository.findOneMemberAvatar(testMember)).willReturn(Optional.of(testAvatar));
+      given(profileRepository.save(testProfile)).willReturn(testSavedProfile);
+
+      profileService.updateProfile(testProfileUpdateDto, testMember);
+
+      assertThat(testSavedProfile.getAvatar()).isEqualTo(testAvatar);
+      assertThat(testSavedProfile.getNickname()).isEqualTo(testProfileUpdateDto.getNickname());
     }
   }
 }
