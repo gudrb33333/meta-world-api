@@ -1,6 +1,8 @@
 package click.gudrb33333.metaworldapi.config.swagger;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,8 @@ public class SwaggerConfig {
     String version = "V1";
 
     return new Docket(DocumentationType.OAS_30) // open api spec 3.0
+        .useDefaultResponseMessages(false)
+        .produces(getProduceContentTypes())
         .apiInfo(apiInfo())
         .groupName(version)
         .select()
@@ -33,6 +37,12 @@ public class SwaggerConfig {
                 .or(RequestHandlerSelectors.basePackage("click.gudrb33333.metaworldapi.api.v1")))
         .paths(PathSelectors.ant("/*").or(PathSelectors.ant("/api/v1/**")))
         .build();
+  }
+
+  private Set<String> getProduceContentTypes() {
+    Set<String> produces = new HashSet<>();
+    produces.add("application/json;charset=UTF-8");
+    return produces;
   }
 
   private ApiInfo apiInfo() {
