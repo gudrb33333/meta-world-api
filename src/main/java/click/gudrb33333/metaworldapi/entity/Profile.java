@@ -48,12 +48,18 @@ public class Profile {
   private Avatar avatar;
 
   @Builder
-  public Profile(String nickname, Avatar avatar) {
+  public Profile(UUID id, String nickname, Avatar avatar) {
+    this.id = id;
     this.nickname = nickname;
     this.avatar = avatar;
   }
 
   public void changeAvatar(Avatar avatar) {
     this.avatar = avatar;
+  }
+
+  public void changeAvatarAndNickname(Avatar avatar, String nickname) {
+    this.avatar = avatar;
+    this.nickname = nickname;
   }
 }
