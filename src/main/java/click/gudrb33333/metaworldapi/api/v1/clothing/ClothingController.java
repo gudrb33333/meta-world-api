@@ -5,6 +5,11 @@ import click.gudrb33333.metaworldapi.api.v1.clothing.dto.ClothingResponseDto;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.util.SessionUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.UUID;
@@ -18,12 +23,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Api(tags = {"의상 API"})
 @RestController
 @RequiredArgsConstructor
+@Api(tags = {"의상 API"})
 @RequestMapping("/api/v1/clothing")
 public class ClothingController {
 
@@ -31,6 +37,14 @@ public class ClothingController {
   private final SessionUtil sessionUtil;
 
   @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  @ApiOperation(value = "의상을 생성한다.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 201, message = "successful creation."),
+        @ApiResponse(code = 400, message = "Invalid clothing supplied."),
+        @ApiResponse(code = 403, message = "no permission.")
+      })
   public ResponseEntity<String> create(
       @Valid @RequestPart ClothingCreateDto clothingCreateDto,
       @RequestPart MultipartFile multipartFile) {
@@ -40,7 +54,18 @@ public class ClothingController {
   }
 
   @GetMapping("/{uuid}")
-  public ResponseEntity<ClothingResponseDto> findOne(@PathVariable("uuid") UUID uuid)
+  @ApiOperation(value = "UUID로 의상을 조회한다.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "Successful operation."),
+        @ApiResponse(code = 400, message = "Invalid UUID supplied."),
+        @ApiResponse(code = 403, message = "No permission."),
+        @ApiResponse(code = 404, message = "Clothing not found.")
+      })
+  public ResponseEntity<ClothingResponseDto> findOne(
+      @ApiParam(value = "의상을 조회하는데 필요한 UUID", required = true)
+          @PathVariable("uuid")
+          UUID uuid)
       throws IOException, ParseException, CloudFrontServiceException {
     Member sessionMember = sessionUtil.getCurrentMember();
     return ResponseEntity.ok().body(clothingService.findOneClothing(uuid, sessionMember));

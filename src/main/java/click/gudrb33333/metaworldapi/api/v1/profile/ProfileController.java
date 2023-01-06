@@ -8,6 +8,8 @@ import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.util.SessionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.io.IOException;
 import java.text.ParseException;
 import javax.validation.Valid;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -30,8 +33,15 @@ public class ProfileController {
   private final ProfileService profileService;
   private final SessionUtil sessionUtil;
 
-  @ApiOperation(value = "유저 프로필 생성", notes = "유저 프로필을 생성한다.")
   @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  @ApiOperation(value = "프로필을 생성한다.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 201, message = "successful creation."),
+        @ApiResponse(code = 400, message = "Invalid profile supplied."),
+        @ApiResponse(code = 403, message = "no permission.")
+      })
   public ResponseEntity<Object> create(@Valid @RequestBody ProfileCreateDto profileCreateDto) {
     Member member = sessionUtil.getCurrentMember();
     profileService.createProfile(profileCreateDto, member);
@@ -39,6 +49,13 @@ public class ProfileController {
   }
 
   @GetMapping("/me")
+  @ApiOperation(value = "로그인된 멤버의 프로필을 조회한다.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "Successful operation."),
+        @ApiResponse(code = 403, message = "No permission."),
+        @ApiResponse(code = 404, message = "profile not found.")
+      })
   public ResponseEntity<ProfileResponseDto> findSigninMemberProfile()
       throws IOException, ParseException, CloudFrontServiceException {
     Member member = sessionUtil.getCurrentMember();
