@@ -88,4 +88,31 @@ public class ProfileService {
         .signedAvatarUrl(signedAvatarUrl)
         .build();
   }
+
+  public void updateProfile(ProfileUpdateDto profileUpdateDto, Member member) {
+    Profile memberProfile = member.getProfile();
+
+    if (memberProfile == null) {
+      throw new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
+    }
+
+    memberProfile =
+        profileRepository
+            .findById(memberProfile.getId())
+            .orElseThrow(
+                () -> {
+                  throw new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
+                });
+
+    Avatar avatar =
+        avatarRepository
+            .findOneMemberAvatar(member)
+            .orElseThrow(
+                () -> {
+                  throw new CatchedException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
+                });
+
+    memberProfile.changeAvatarAndNickname(avatar, profileUpdateDto.getNickname());
+    profileRepository.save(memberProfile);
+  }
 }
