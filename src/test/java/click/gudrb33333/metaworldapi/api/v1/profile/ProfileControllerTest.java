@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
+import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.support.WithAuthMember;
@@ -49,9 +50,9 @@ class ProfileControllerTest {
   @Test
   @WithAuthMember(email = "test@test.com", role = Role.MEMBER)
   void create() throws Exception {
-    ProfileCreateDto mockProfileCreateDto = ProfileCreateDto.builder().nickname("testName").build();
+    ProfileCreateDto testProfileCreateDto = ProfileCreateDto.builder().nickname("testName").build();
 
-    String content = objectMapper.writeValueAsString(mockProfileCreateDto);
+    String content = objectMapper.writeValueAsString(testProfileCreateDto);
 
     mockMvc
         .perform(post("/api/v1/profiles").content(content).session(mockHttpSession))
