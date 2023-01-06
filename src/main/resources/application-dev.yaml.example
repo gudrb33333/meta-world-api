@@ -18,10 +18,10 @@ logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
 
-#ssl
+#ssl(required for communication with the dev frontend)
 server:
   ssl:
-    enable: true
+    enable: false
     key-store: <need value>
     key-store-password: <need value>
     key-store-type: PKCS12
