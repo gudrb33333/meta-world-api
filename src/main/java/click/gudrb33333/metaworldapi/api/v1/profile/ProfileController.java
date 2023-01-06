@@ -2,6 +2,7 @@ package click.gudrb33333.metaworldapi.api.v1.profile;
 
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
+import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
@@ -18,6 +19,7 @@ import org.jets3t.service.CloudFrontServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,5 +62,20 @@ public class ProfileController {
       throws IOException, ParseException, CloudFrontServiceException {
     Member member = sessionUtil.getCurrentMember();
     return ResponseEntity.ok().body(profileService.findSigninMemberProfile(member));
+  }
+
+  @PatchMapping("/me")
+  @ApiOperation(value = "로그인된 멤버의 프로필을 수정한다.")
+  @ApiResponses(
+      value = {
+          @ApiResponse(code = 204, message = "Successful operation."),
+          @ApiResponse(code = 400, message = "Invalid profile supplied."),
+          @ApiResponse(code = 403, message = "No permission."),
+          @ApiResponse(code = 404, message = "profile not found.")
+      })
+  public ResponseEntity<String> update(@Valid @RequestBody ProfileUpdateDto profileUpdateDto) {
+    Member member = sessionUtil.getCurrentMember();
+    profileService.updateProfile(profileUpdateDto, member);
+    return ResponseEntity.noContent().build();
   }
 }
