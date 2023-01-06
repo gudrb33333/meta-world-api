@@ -2,6 +2,7 @@ package click.gudrb33333.metaworldapi.api.v1.profile;
 
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
+import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.Profile;
@@ -39,14 +40,14 @@ public class ProfileService {
   private final MemberRepository memberRepository;
   private final AwsS3Util awsS3Util;
 
-  public void createProfile(ProfileCreateDto profileCreateDto, Member currentMember) {
-    if (currentMember.getProfile() != null) {
+  public void createProfile(ProfileCreateDto profileCreateDto, Member member) {
+    if (member.getProfile() != null) {
       throw new CatchedException(ErrorMessage.CONFLICT_PROFILE, HttpStatus.CONFLICT);
     }
 
     Avatar avatar =
         avatarRepository
-            .findOneMemberAvatar(currentMember)
+            .findOneMemberAvatar(member)
             .orElseThrow(
                 () -> {
                   throw new CatchedException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
@@ -57,9 +58,9 @@ public class ProfileService {
 
     Profile savedProfile = profileRepository.save(profile);
 
-    currentMember.changeProfile(savedProfile);
+    member.changeProfile(savedProfile);
 
-    memberRepository.save(currentMember);
+    memberRepository.save(member);
   }
 
   public ProfileResponseDto findSigninMemberProfile(Member member)
