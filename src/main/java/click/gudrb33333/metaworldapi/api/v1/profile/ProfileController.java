@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.jets3t.service.CloudFrontServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +66,7 @@ public class ProfileController {
   }
 
   @PatchMapping("/me")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @ApiOperation(value = "로그인된 멤버의 프로필을 수정한다.")
   @ApiResponses(
       value = {
