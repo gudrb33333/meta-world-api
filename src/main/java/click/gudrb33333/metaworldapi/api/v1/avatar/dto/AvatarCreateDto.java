@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AvatarCreateDto {
 
-  @ApiModelProperty(position = 1, value = "성별", allowableValues = "male,female")
+  @ApiModelProperty(value = "성별", allowableValues = "male,female")
   private GenderType genderType;
 
-  @ApiModelProperty(position = 2, value = "공개 여부", allowableValues = "public,private")
+  @ApiModelProperty(value = "공개 여부", allowableValues = "public,private", required = true)
   private PublicType publicType;
 
-  @ApiModelProperty(position = 3, value = "생성된 아바타 url")
+  @ApiModelProperty(value = "Ready Player Me 아바타 url", required = true)
   private String avatarUrl;
 
   @Builder
