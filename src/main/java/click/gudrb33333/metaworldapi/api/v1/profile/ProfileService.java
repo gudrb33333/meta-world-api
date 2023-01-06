@@ -89,7 +89,7 @@ public class ProfileService {
         .build();
   }
 
-  public void updateProfile(ProfileUpdateDto profileUpdateDto, Member member) {
+  public void updateSigninMemberProfile(ProfileUpdateDto profileUpdateDto, Member member) {
     Profile memberProfile = member.getProfile();
 
     if (memberProfile == null) {

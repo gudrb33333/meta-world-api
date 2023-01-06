@@ -163,7 +163,7 @@ class ProfileServiceTest {
   }
 
   @Nested
-  class updateProfile {
+  class updateSigninMemberProfile {
 
     ProfileUpdateDto testProfileUpdateDto = ProfileUpdateDto.builder().nickname("testName").build();
 
@@ -185,7 +185,7 @@ class ProfileServiceTest {
     void whenCurrentMemberDoseNotHaveProfile() {
       assertThatThrownBy(
               () -> {
-                profileService.updateProfile(testProfileUpdateDto, testMember);
+                profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
               })
           .isInstanceOf(CatchedException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
@@ -200,7 +200,7 @@ class ProfileServiceTest {
 
       assertThatThrownBy(
               () -> {
-                profileService.updateProfile(testProfileUpdateDto, testMember);
+                profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
               })
           .isInstanceOf(CatchedException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
@@ -216,7 +216,7 @@ class ProfileServiceTest {
 
       assertThatThrownBy(
               () -> {
-                profileService.updateProfile(testProfileUpdateDto, testMember);
+                profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
               })
           .isInstanceOf(CatchedException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_AVATAR);
@@ -238,7 +238,7 @@ class ProfileServiceTest {
       given(avatarRepository.findOneMemberAvatar(testMember)).willReturn(Optional.of(testAvatar));
       given(profileRepository.save(testProfile)).willReturn(testSavedProfile);
 
-      profileService.updateProfile(testProfileUpdateDto, testMember);
+      profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
 
       assertThat(testSavedProfile.getAvatar()).isEqualTo(testAvatar);
       assertThat(testSavedProfile.getNickname()).isEqualTo(testProfileUpdateDto.getNickname());

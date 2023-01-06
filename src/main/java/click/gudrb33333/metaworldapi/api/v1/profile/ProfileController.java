@@ -75,9 +75,9 @@ public class ProfileController {
           @ApiResponse(code = 403, message = "No permission."),
           @ApiResponse(code = 404, message = "profile not found.")
       })
-  public ResponseEntity<String> update(@Valid @RequestBody ProfileUpdateDto profileUpdateDto) {
+  public ResponseEntity<String> updateSigninMemberProfile(@Valid @RequestBody ProfileUpdateDto profileUpdateDto) {
     Member member = sessionUtil.getCurrentMember();
-    profileService.updateProfile(profileUpdateDto, member);
+    profileService.updateSigninMemberProfile(profileUpdateDto, member);
     return ResponseEntity.noContent().build();
   }
 }
