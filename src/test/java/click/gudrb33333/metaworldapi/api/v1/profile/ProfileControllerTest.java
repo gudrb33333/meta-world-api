@@ -3,6 +3,7 @@ package click.gudrb33333.metaworldapi.api.v1.profile;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -78,5 +79,19 @@ class ProfileControllerTest {
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.signedAvatarUrl", is(expectedSignedAvatarUrl)))
         .andExpect(jsonPath("$.nickname", is(expectedNickname)));
+  }
+
+  @Test
+  @WithAuthMember(email = "test@test.com", role = Role.MEMBER)
+  public void update() throws Exception {
+    ProfileUpdateDto testProfileUpdateDto = ProfileUpdateDto.builder()
+        .nickname("testNickname")
+        .build();
+
+    String content = objectMapper.writeValueAsString(testProfileUpdateDto);
+
+    mockMvc
+        .perform(patch("/api/v1/profiles/me").content(content).session(mockHttpSession))
+        .andExpect(status().isNoContent());
   }
 }
