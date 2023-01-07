@@ -10,6 +10,7 @@ import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
+import click.gudrb33333.metaworldapi.entity.MemberAsset;
 import click.gudrb33333.metaworldapi.entity.Profile;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
@@ -19,6 +20,7 @@ import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.AvatarRepository;
+import click.gudrb33333.metaworldapi.repository.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.repository.MemberRepository;
 import click.gudrb33333.metaworldapi.repository.ProfileRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
@@ -45,18 +47,18 @@ class ProfileServiceTest {
 
   @Mock private MemberRepository memberRepository;
 
+  @Mock private MemberAssetRepository memberAssetRepository;
+
   @Mock private AwsS3Util awsS3Util;
 
   @Nested
   class createProfile {
 
     ProfileCreateDto testProfileCreateDto = ProfileCreateDto.builder().nickname("testName").build();
-
     Member testMember = Member.builder().email("test@test.com").build();
-
     Profile testProfile = Profile.builder().nickname("testName").build();
 
-    Avatar testAvatar =
+    Avatar savedTestAvatar =
         Avatar.builder()
             .id(UUID.randomUUID())
             .assetType(AssetType.AVATAR)
@@ -67,8 +69,17 @@ class ProfileServiceTest {
             .publicType(PublicType.PRIVATE)
             .build();
 
+    MemberAsset savedTestMemberAsset =
+        MemberAsset.builder().asset(savedTestAvatar).member(testMember).build();
+
+    Profile savedTestProfile =
+        Profile.builder()
+            .nickname(testProfileCreateDto.getNickname())
+            .avatar(savedTestAvatar)
+            .build();
+
     @Test
-    void whenCurrentMemberHaveProfile() {
+    void whenMemberHaveProfile() {
       testMember.changeProfile(testProfile);
 
       assertThatThrownBy(
@@ -80,29 +91,21 @@ class ProfileServiceTest {
     }
 
     @Test
-    void whenMemberDoseNotHaveAvatar() {
-      assertThatThrownBy(
-              () -> {
-                profileService.createProfile(testProfileCreateDto, testMember);
-              })
-          .isInstanceOf(CatchedException.class)
-          .hasMessageContaining(ErrorMessage.NOT_FOUND_AVATAR);
-    }
-
-    @Test
     void whenMemberHaveAvatar() {
-      Optional<Avatar> optionalTestAvatar = Optional.of(testAvatar);
-      given(avatarRepository.findOneMemberAvatar(testMember)).willReturn(optionalTestAvatar);
+      Member savedTestMember = Member.builder().build();
 
-      testProfile.changeAvatar(testAvatar);
+      given(avatarRepository.save(any(Avatar.class))).willReturn(savedTestAvatar);
+      given(memberAssetRepository.save(any(MemberAsset.class))).willReturn(savedTestMemberAsset);
+      given(profileRepository.save(any(Profile.class))).willReturn(savedTestProfile);
 
-      Profile testProfileWithAvatar =
-          Profile.builder().nickname(testProfileCreateDto.getNickname()).avatar(testAvatar).build();
+      savedTestMember.changeProfile(savedTestProfile);
 
-      given(profileRepository.save(any(Profile.class))).willReturn(testProfileWithAvatar);
-      given(memberRepository.save(any(Member.class))).willReturn(testMember);
+      given(memberRepository.save(any(Member.class))).willReturn(savedTestMember);
 
       profileService.createProfile(testProfileCreateDto, testMember);
+
+      assertThat(savedTestMember.getProfile()).isEqualTo(savedTestProfile);
+      assertThat(savedTestMember.getProfile().getAvatar()).isEqualTo(savedTestAvatar);
     }
   }
 
@@ -156,7 +159,7 @@ class ProfileServiceTest {
     Member testMember = Member.builder().email("test@test.com").build();
     Profile testProfile = Profile.builder().nickname("testName").build();
 
-    Avatar testAvatar =
+    Avatar savedTestAvatar =
         Avatar.builder()
             .id(UUID.randomUUID())
             .assetType(AssetType.AVATAR)
@@ -169,6 +172,8 @@ class ProfileServiceTest {
 
     @Test
     void whenMemberDoseNotHaveProfile() {
+      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.empty());
+
       assertThatThrownBy(
               () -> {
                 profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
@@ -178,37 +183,23 @@ class ProfileServiceTest {
     }
 
     @Test
-    void whenAvatarNotFound() {
-      testMember.changeProfile(testProfile);
-
-      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.of(testMember));
-
-      assertThatThrownBy(
-              () -> {
-                profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
-              })
-          .isInstanceOf(CatchedException.class)
-          .hasMessageContaining(ErrorMessage.NOT_FOUND_AVATAR);
-    }
-
-    @Test
     void whenMemberHaveProfileAndAvatarFound() {
       Profile testSavedProfile =
           Profile.builder()
               .id(UUID.randomUUID())
               .nickname(testProfileUpdateDto.getNickname())
-              .avatar(testAvatar)
+              .avatar(savedTestAvatar)
               .build();
 
       testMember.changeProfile(testProfile);
 
       given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.of(testMember));
-      given(avatarRepository.findOneMemberAvatar(testMember)).willReturn(Optional.of(testAvatar));
-      given(profileRepository.save(testProfile)).willReturn(testSavedProfile);
+      given(avatarRepository.save(any(Avatar.class))).willReturn(savedTestAvatar);
+      given(profileRepository.save(any(Profile.class))).willReturn(testSavedProfile);
 
       profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
 
-      assertThat(testSavedProfile.getAvatar()).isEqualTo(testAvatar);
+      assertThat(testSavedProfile.getAvatar()).isEqualTo(savedTestAvatar);
       assertThat(testSavedProfile.getNickname()).isEqualTo(testProfileUpdateDto.getNickname());
     }
   }
