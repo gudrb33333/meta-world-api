@@ -82,6 +82,8 @@ class ProfileServiceTest {
     void whenMemberHaveProfile() {
       testMember.changeProfile(testProfile);
 
+      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.of(testMember));
+
       assertThatThrownBy(
               () -> {
                 profileService.createProfile(testProfileCreateDto, testMember);
@@ -94,6 +96,7 @@ class ProfileServiceTest {
     void whenMemberHaveAvatar() {
       Member savedTestMember = Member.builder().build();
 
+      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.empty());
       given(avatarRepository.save(any(Avatar.class))).willReturn(savedTestAvatar);
       given(memberAssetRepository.save(any(MemberAsset.class))).willReturn(savedTestMemberAsset);
       given(profileRepository.save(any(Profile.class))).willReturn(savedTestProfile);

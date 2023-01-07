@@ -36,10 +36,14 @@ public class ProfileService {
   private final MemberAssetRepository memberAssetRepository;
   private final AwsS3Util awsS3Util;
 
+  @Transactional(rollbackFor = Exception.class)
   public void createProfile(ProfileCreateDto profileCreateDto, Member member) {
-    if (member.getProfile() != null) {
-      throw new CatchedException(ErrorMessage.CONFLICT_PROFILE, HttpStatus.CONFLICT);
-    }
+    memberRepository
+        .findMemberWithProfile(member)
+        .ifPresent(
+            (x) -> {
+              throw new CatchedException(ErrorMessage.CONFLICT_PROFILE, HttpStatus.CONFLICT);
+            });
 
     UUID fileUuid = UUID.randomUUID();
     Avatar avatar =
