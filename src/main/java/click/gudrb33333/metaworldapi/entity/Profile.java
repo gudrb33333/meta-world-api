@@ -19,11 +19,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @Table(name = "profiles")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "deleted_at is null")
 public class Profile {
 
   @Id
@@ -42,6 +44,9 @@ public class Profile {
   @UpdateTimestamp
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
+
+  @Column(name = "deleted_at")
+  private LocalDateTime deletedAt;
 
   @JoinColumn(name = "asset_id")
   @OneToOne(targetEntity = Avatar.class, fetch = FetchType.EAGER)
