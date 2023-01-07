@@ -2,6 +2,7 @@ package click.gudrb33333.metaworldapi.api.v1.profile;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -83,7 +84,7 @@ class ProfileControllerTest {
 
   @Test
   @WithAuthMember(email = "test@test.com", role = Role.MEMBER)
-  public void update() throws Exception {
+  void update() throws Exception {
     ProfileUpdateDto testProfileUpdateDto = ProfileUpdateDto.builder()
         .nickname("testNickname")
         .build();
@@ -92,6 +93,14 @@ class ProfileControllerTest {
 
     mockMvc
         .perform(patch("/api/v1/profiles/me").content(content).session(mockHttpSession))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  @WithAuthMember(email = "test@test.com", role = Role.MEMBER)
+  void deleteSigninMemberProfile() throws Exception {
+    mockMvc
+        .perform(delete("/api/v1/profiles/me").session(mockHttpSession))
         .andExpect(status().isNoContent());
   }
 }

@@ -110,9 +110,7 @@ class ProfileServiceTest {
   class findSigninMemberProfile {
 
     Member testMember = Member.builder().email("test@test.com").build();
-
     Profile testProfile = Profile.builder().nickname("testName").build();
-
     Avatar testAvatar =
         Avatar.builder()
             .id(UUID.randomUUID())
@@ -125,19 +123,7 @@ class ProfileServiceTest {
             .build();
 
     @Test
-    void whenCurrentMemberDoseNotHaveProfile() {
-      assertThatThrownBy(
-              () -> {
-                profileService.findSigninMemberProfile(testMember);
-              })
-          .isInstanceOf(CatchedException.class)
-          .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
-    }
-
-    @Test
-    void whenProfileNotFound() {
-      testMember.changeProfile(testProfile);
-
+    void whenMemberDoseNotHaveProfile() {
       assertThatThrownBy(
               () -> {
                 profileService.findSigninMemberProfile(testMember);
@@ -151,7 +137,7 @@ class ProfileServiceTest {
       testProfile.changeAvatar(testAvatar);
       testMember.changeProfile(testProfile);
 
-      given(profileRepository.findById(testProfile.getId())).willReturn(Optional.of(testProfile));
+      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.of(testMember));
       given(awsS3Util.createSignedUrl(S3DirectoryType.AVATAR, testAvatar.getS3AssetUUID(), 3600))
           .willReturn("testSignedAvatarUrl");
 
@@ -182,7 +168,7 @@ class ProfileServiceTest {
             .build();
 
     @Test
-    void whenCurrentMemberDoseNotHaveProfile() {
+    void whenMemberDoseNotHaveProfile() {
       assertThatThrownBy(
               () -> {
                 profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
@@ -192,27 +178,10 @@ class ProfileServiceTest {
     }
 
     @Test
-    void whenProfileNotFound() {
+    void whenAvatarNotFound() {
       testMember.changeProfile(testProfile);
 
-      given(profileRepository.findById(testMember.getProfile().getId()))
-          .willReturn(Optional.empty());
-
-      assertThatThrownBy(
-              () -> {
-                profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
-              })
-          .isInstanceOf(CatchedException.class)
-          .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
-    }
-
-    @Test
-    void whenMemberDoesNotHaveAvatar() {
-      testMember.changeProfile(testProfile);
-
-      given(profileRepository.findById(testMember.getProfile().getId()))
-          .willReturn(Optional.of(testProfile));
-      given(avatarRepository.findOneMemberAvatar(testMember)).willReturn(Optional.empty());
+      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.of(testMember));
 
       assertThatThrownBy(
               () -> {
@@ -223,7 +192,7 @@ class ProfileServiceTest {
     }
 
     @Test
-    void whenMemberHaveAvatar() {
+    void whenMemberHaveProfileAndAvatarFound() {
       Profile testSavedProfile =
           Profile.builder()
               .id(UUID.randomUUID())
@@ -233,8 +202,7 @@ class ProfileServiceTest {
 
       testMember.changeProfile(testProfile);
 
-      given(profileRepository.findById(testMember.getProfile().getId()))
-          .willReturn(Optional.of(testProfile));
+      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.of(testMember));
       given(avatarRepository.findOneMemberAvatar(testMember)).willReturn(Optional.of(testAvatar));
       given(profileRepository.save(testProfile)).willReturn(testSavedProfile);
 
@@ -242,6 +210,44 @@ class ProfileServiceTest {
 
       assertThat(testSavedProfile.getAvatar()).isEqualTo(testAvatar);
       assertThat(testSavedProfile.getNickname()).isEqualTo(testProfileUpdateDto.getNickname());
+    }
+  }
+
+  @Nested
+  class deleteSigninMemberProfile {
+
+    Member testMember = Member.builder().email("test@test.com").build();
+    Profile testProfile = Profile.builder().nickname("testName").build();
+
+    @Test
+    void whenMemberDoseNotHaveProfile() {
+      assertThatThrownBy(
+              () -> {
+                profileService.deleteSigninMemberProfile(testMember);
+              })
+          .isInstanceOf(CatchedException.class)
+          .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
+    }
+
+    @Test
+    void whenProfileFound() {
+      testMember.changeProfile(testProfile);
+
+      Member testSavedMember = Member.builder().id(UUID.randomUUID()).build();
+      testSavedMember.changeProfile(null);
+
+      Profile testSavedProfile = Profile.builder().id(UUID.randomUUID()).build();
+      testSavedProfile.changeDeleteTimeToNow();
+
+      given(memberRepository.findMemberWithProfile(testMember)).willReturn(Optional.of(testMember));
+
+      given(profileRepository.save(testProfile)).willReturn(testSavedProfile);
+      given(memberRepository.save(testMember)).willReturn(testSavedMember);
+
+      profileService.deleteSigninMemberProfile(testMember);
+
+      assertThat(testSavedProfile.getDeletedAt()).isNotNull();
+      assertThat(testSavedMember.getProfile()).isNull();
     }
   }
 }
