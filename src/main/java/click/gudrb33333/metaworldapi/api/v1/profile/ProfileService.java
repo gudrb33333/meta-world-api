@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.jets3t.service.CloudFrontServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -95,5 +96,24 @@ public class ProfileService {
 
     profile.changeAvatarAndNickname(avatar, profileUpdateDto.getNickname());
     profileRepository.save(profile);
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  public void deleteSigninMemberProfile(Member member) {
+    Member memberWithProfile =
+        memberRepository
+            .findMemberWithProfile(member)
+            .orElseThrow(
+                () -> {
+                  throw new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
+                });
+
+    Profile profile = memberWithProfile.getProfile();
+
+    memberWithProfile.changeProfile(null);
+    profile.changeDeleteTimeToNow();
+
+    profileRepository.save(profile);
+    memberRepository.save(memberWithProfile);
   }
 }
