@@ -67,4 +67,8 @@ public class Profile {
     this.avatar = avatar;
     this.nickname = nickname;
   }
+
+  public void changeDeleteTimeToNow(){
+    this.deletedAt = LocalDateTime.now();
+  }
 }
