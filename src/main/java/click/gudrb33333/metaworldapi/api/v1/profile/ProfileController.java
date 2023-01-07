@@ -70,14 +70,30 @@ public class ProfileController {
   @ApiOperation(value = "로그인된 멤버의 프로필을 수정한다.")
   @ApiResponses(
       value = {
-          @ApiResponse(code = 204, message = "Successful operation."),
-          @ApiResponse(code = 400, message = "Invalid profile supplied."),
-          @ApiResponse(code = 403, message = "No permission."),
-          @ApiResponse(code = 404, message = "profile not found.")
+        @ApiResponse(code = 204, message = "Successful operation."),
+        @ApiResponse(code = 400, message = "Invalid profile supplied."),
+        @ApiResponse(code = 403, message = "No permission."),
+        @ApiResponse(code = 404, message = "profile not found.")
       })
-  public ResponseEntity<String> updateSigninMemberProfile(@Valid @RequestBody ProfileUpdateDto profileUpdateDto) {
+  public ResponseEntity<String> updateSigninMemberProfile(
+      @Valid @RequestBody ProfileUpdateDto profileUpdateDto) {
     Member member = sessionUtil.getCurrentMember();
     profileService.updateSigninMemberProfile(profileUpdateDto, member);
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/me")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ApiOperation(value = "로그인된 멤버의 프로필을 삭제한다.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 204, message = "Successful operation."),
+        @ApiResponse(code = 403, message = "No permission."),
+        @ApiResponse(code = 404, message = "profile not found.")
+      })
+  public ResponseEntity<String> deleteSigninMemberProfile() {
+    Member member = sessionUtil.getCurrentMember();
+    profileService.deleteSigninMemberProfile(member);
     return ResponseEntity.noContent().build();
   }
 }
