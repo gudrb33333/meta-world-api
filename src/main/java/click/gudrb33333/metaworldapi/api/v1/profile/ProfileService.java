@@ -15,7 +15,7 @@ import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
-import click.gudrb33333.metaworldapi.repository.ProfileRepository;
+import click.gudrb33333.metaworldapi.repository.profile.ProfileRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
 import java.io.IOException;
 import java.text.ParseException;

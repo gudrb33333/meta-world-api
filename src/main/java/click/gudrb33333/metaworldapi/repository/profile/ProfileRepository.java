@@ -1,4 +1,4 @@
-package click.gudrb33333.metaworldapi.repository;
+package click.gudrb33333.metaworldapi.repository.profile;
 
 import click.gudrb33333.metaworldapi.entity.Profile;
 import java.util.UUID;
