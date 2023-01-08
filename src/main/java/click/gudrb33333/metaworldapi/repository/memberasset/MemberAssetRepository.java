@@ -1,4 +1,4 @@
-package click.gudrb33333.metaworldapi.repository;
+package click.gudrb33333.metaworldapi.repository.memberasset;
 
 import click.gudrb33333.metaworldapi.entity.Clothing;
 import click.gudrb33333.metaworldapi.entity.Member;
