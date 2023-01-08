@@ -17,7 +17,8 @@ public class CorsConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.addAllowedOrigin("*");
+    configuration.addAllowedOrigin(frontendDomain);
+    configuration.addAllowedOrigin("https://api.meta-world.gudrb33333.click");
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.setAllowCredentials(true);
