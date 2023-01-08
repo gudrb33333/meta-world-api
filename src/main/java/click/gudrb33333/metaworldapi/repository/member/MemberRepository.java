@@ -1,4 +1,4 @@
-package click.gudrb33333.metaworldapi.repository;
+package click.gudrb33333.metaworldapi.repository.member;
 
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;

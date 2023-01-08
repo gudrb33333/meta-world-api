@@ -3,20 +3,17 @@ package click.gudrb33333.metaworldapi.repository;
 import static click.gudrb33333.metaworldapi.entity.QProfile.profile;
 import static click.gudrb33333.metaworldapi.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.Profile;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
-import com.querydsl.core.types.OrderSpecifier;
+import click.gudrb33333.metaworldapi.repository.member.MemberRepositoryImpl;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +25,8 @@ import org.springframework.http.HttpStatus;
 @ExtendWith(MockitoExtension.class)
 class MemberRepositoryImplTest {
 
-  @InjectMocks MemberRepositoryImpl memberRepository;
+  @InjectMocks
+  MemberRepositoryImpl memberRepository;
 
   @Mock JPAQueryFactory queryFactory;
 

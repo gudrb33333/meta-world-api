@@ -11,10 +11,8 @@ import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
-import click.gudrb33333.metaworldapi.repository.MemberRepository;
+import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -24,8 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 @ExtendWith(MockitoExtension.class)

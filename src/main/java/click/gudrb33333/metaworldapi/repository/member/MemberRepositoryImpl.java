@@ -1,10 +1,10 @@
-package click.gudrb33333.metaworldapi.repository;
+package click.gudrb33333.metaworldapi.repository.member;
 
 import static click.gudrb33333.metaworldapi.entity.QProfile.profile;
-import static click.gudrb33333.metaworldapi.entity.QMember.member;
 
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.QMember;
+import click.gudrb33333.metaworldapi.repository.member.MemberRepositoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

@@ -6,7 +6,7 @@ import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
-import click.gudrb33333.metaworldapi.repository.MemberRepository;
+import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
 import java.util.ArrayList;
 import java.util.List;
