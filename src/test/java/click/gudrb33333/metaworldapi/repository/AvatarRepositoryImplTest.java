@@ -10,7 +10,6 @@ import static org.mockito.BDDMockito.given;
 import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.MemberAsset;
-import click.gudrb33333.metaworldapi.entity.QMemberAsset;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.GenderType;
@@ -20,6 +19,7 @@ import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
+import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepositoryImpl;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -37,7 +37,8 @@ import org.springframework.http.HttpStatus;
 @ExtendWith(MockitoExtension.class)
 class AvatarRepositoryImplTest {
 
-  @InjectMocks AvatarRepositoryImpl avatarRepositoryImpl;
+  @InjectMocks
+  AvatarRepositoryImpl avatarRepositoryImpl;
 
   @Mock JPAQueryFactory queryFactory;
 

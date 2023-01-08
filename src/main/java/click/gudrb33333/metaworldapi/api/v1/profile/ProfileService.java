@@ -12,7 +12,7 @@ import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
-import click.gudrb33333.metaworldapi.repository.AvatarRepository;
+import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.repository.MemberRepository;
 import click.gudrb33333.metaworldapi.repository.ProfileRepository;
