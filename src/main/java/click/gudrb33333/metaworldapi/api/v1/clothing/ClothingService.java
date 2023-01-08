@@ -11,7 +11,7 @@ import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
 import click.gudrb33333.metaworldapi.exception.CatchedException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
-import click.gudrb33333.metaworldapi.repository.ClothingRepository;
+import click.gudrb33333.metaworldapi.repository.clothing.ClothingRepository;
 import click.gudrb33333.metaworldapi.repository.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
 import java.io.IOException;
