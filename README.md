@@ -12,9 +12,10 @@
   <img src="https://img.shields.io/badge/tests-80%20passed-brightgreen"/>
 </div>
 <br>
-Meta World API 프로젝트 입니다.
-<br><br>
-아래의 링크들에서 API 문서, ERD 문서, 테스트 코드 진행률을 참고해주세요.
+
+[Meta World](https://github.com/gudrb33333/meta-world-client)를 위한 REST API 프로젝트 입니다.
+
+아래의 링크들에서 API 문서, ERD 문서, 테스트 코드 진행률을 참고해주세요. 😀
 
 ## API 문서
 <p>
