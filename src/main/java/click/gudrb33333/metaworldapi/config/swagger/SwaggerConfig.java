@@ -47,7 +47,13 @@ public class SwaggerConfig {
     return new ApiInfoBuilder()
         .title("META WORLD REST API")
         .version(appVersion)
-        .description("")
+        .description("""
+                    META WORLD REST API 입니다.<br><br>
+                    세션기반으로 인증이 됩니다.<br>
+                    권한을 위해서 5.회원인증에서 회원가입 후, 로그인 해주세요.<br><br>
+                    
+                    알림! 3D 에셋이 Draco 압축이 적용되어 있습니다. 서명된 URL로 다운 받으실 경우 Blender 등의 3D툴에서 확인 해주세요.
+                    """)
         .build();
   }
 }
