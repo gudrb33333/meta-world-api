@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
+import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileSearchCondition;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
@@ -26,8 +27,12 @@ import click.gudrb33333.metaworldapi.repository.profile.ProfileRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.jets3t.service.CloudFrontServiceException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,6 +40,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {
@@ -109,6 +118,73 @@ class ProfileServiceTest {
 
       assertThat(savedTestMember.getProfile()).isEqualTo(savedTestProfile);
       assertThat(savedTestMember.getProfile().getAvatar()).isEqualTo(savedTestAvatar);
+    }
+  }
+
+  @Nested
+  class findAllWithCondition {
+
+    Pageable pageable = PageRequest.of(0, 8);
+    ProfileSearchCondition testProfileSearchCondition =
+        ProfileSearchCondition.builder().nickname("testNickname").build();
+
+    Avatar testAvatar =
+        Avatar.builder()
+            .id(UUID.randomUUID())
+            .assetType(AssetType.AVATAR)
+            .s3AssetUUID(UUID.randomUUID())
+            .extension(ExtensionType.GLB)
+            .s3DirectoryType(S3DirectoryType.AVATAR)
+            .genderType(GenderType.MALE)
+            .publicType(PublicType.PRIVATE)
+            .build();
+
+    Profile testProfile = Profile.builder().nickname("testNickname").avatar(testAvatar).build();
+    ProfileResponseDto testProfileResponseDto =
+        ProfileResponseDto.builder().nickname("testNickname").signedAvatarUrl("testUrl").build();
+
+    List<Profile> testProfileList =
+        new ArrayList<>(Stream.of(testProfile).collect(Collectors.toList()));
+    List<ProfileResponseDto> testProfileResponseDtoList =
+        new ArrayList<>(Stream.of(testProfileResponseDto).collect(Collectors.toList()));
+
+    Page<Profile> testProfilePage = new PageImpl<>(testProfileList);
+
+    @Test
+    void whenCreateSignedUrlThrowException()
+        throws IOException, ParseException, CloudFrontServiceException {
+      given(profileRepository.findAllWithCondition(testProfileSearchCondition, pageable))
+          .willReturn(testProfilePage);
+
+      given(
+              awsS3Util.createSignedUrl(
+                  S3DirectoryType.AVATAR, testProfile.getAvatar().getS3AssetUUID(), 3600))
+          .willThrow(new IOException());
+
+      assertThatThrownBy(
+              () -> {
+                profileService.findAllWithCondition(testProfileSearchCondition, pageable);
+              })
+          .isInstanceOf(CatchedException.class);
+    }
+
+    @Test
+    void whenCreateSignedUrl() throws IOException, ParseException, CloudFrontServiceException {
+
+      given(profileRepository.findAllWithCondition(testProfileSearchCondition, pageable))
+          .willReturn(testProfilePage);
+
+      given(
+              awsS3Util.createSignedUrl(
+                  S3DirectoryType.AVATAR, testProfile.getAvatar().getS3AssetUUID(), 3600))
+          .willReturn("testSignedUrl");
+
+      Page<ProfileResponseDto> testProfileResponseDtoPage =
+          profileService.findAllWithCondition(testProfileSearchCondition, pageable);
+
+      assertThat(testProfileResponseDtoPage.getTotalPages()).isEqualTo(1);
+      assertThat(testProfileResponseDtoPage.getContent().get(0).getNickname())
+          .isEqualTo(testProfileResponseDtoList.get(0).getNickname());
     }
   }
 

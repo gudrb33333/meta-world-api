@@ -2,6 +2,7 @@ package click.gudrb33333.metaworldapi.api.v1.profile;
 
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
+import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileSearchCondition;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Avatar;
 import click.gudrb33333.metaworldapi.entity.Member;
@@ -22,6 +23,8 @@ import java.text.ParseException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.jets3t.service.CloudFrontServiceException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,5 +152,30 @@ public class ProfileService {
 
     profileRepository.save(profile);
     memberRepository.save(memberWithProfile);
+  }
+
+  public Page<ProfileResponseDto> findAllWithCondition(
+      ProfileSearchCondition condition, Pageable pageable) {
+    Page<Profile> profiles = profileRepository.findAllWithCondition(condition, pageable);
+
+    return profiles.map(this::convertProfileResponseDto);
+  }
+
+  private ProfileResponseDto convertProfileResponseDto(Profile profile) {
+    String signedAvatarUrl;
+
+    try {
+      signedAvatarUrl =
+          awsS3Util.createSignedUrl(
+              S3DirectoryType.AVATAR, profile.getAvatar().getS3AssetUUID(), 3600);
+    } catch (IOException | ParseException | CloudFrontServiceException e) {
+      throw new CatchedException(
+          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return ProfileResponseDto.builder()
+        .nickname(profile.getNickname())
+        .signedAvatarUrl(signedAvatarUrl)
+        .build();
   }
 }
