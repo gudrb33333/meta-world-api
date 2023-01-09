@@ -59,7 +59,7 @@ public class AwsS3Util {
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
       throw new CatchedException(
-          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -82,7 +82,7 @@ public class AwsS3Util {
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
       throw new CatchedException(
-          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -119,7 +119,6 @@ public class AwsS3Util {
             // Resource path (optional, can include '*' and '?' wildcards)
             policyResourcePath,
             // DateLessThan
-            // TODO: fix epochDateLessThan
             ServiceUtils.parseIso8601Date(nowAsISO),
             // CIDR IP address restriction (optional, 0.0.0.0/0 means everyone)
             "0.0.0.0/0",
