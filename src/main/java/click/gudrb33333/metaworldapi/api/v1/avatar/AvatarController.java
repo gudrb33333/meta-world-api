@@ -37,7 +37,14 @@ public class AvatarController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @ApiOperation(value = "아바타를 생성한다.")
+  @ApiOperation(
+      value = "아바타를 생성한다.",
+      notes =
+          """
+            avatarUrl의 URL에서 GLB파일 InputStream으로 받아 S3로 업로드 합니다.<br><br>
+    
+            publicType이 private인 경우 자기 자신만 사용가능합니다.
+          """)
   @ApiResponses(
       value = {
         @ApiResponse(code = 201, message = "Successful creation."),

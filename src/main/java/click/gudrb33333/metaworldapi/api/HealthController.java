@@ -18,7 +18,7 @@ public class HealthController {
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  @ApiOperation(value = "헬스 체크를 한다.")
+  @ApiOperation(value = "헬스 체크를 한다.",notes = "어플리케이션이 동작하고 있는지 체크합니다.")
   @ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation.")})
   public ResponseEntity<String> healthCheck() {
     return ResponseEntity.ok().body("OK");

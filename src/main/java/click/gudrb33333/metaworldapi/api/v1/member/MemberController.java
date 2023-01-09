@@ -25,7 +25,7 @@ public class MemberController {
   private final SessionUtil sessionUtil;
 
   @GetMapping("/me")
-  @ApiOperation(value = "로그인된 멤버를 조회한다.")
+  @ApiOperation(value = "로그인된 멤버를 조회한다.", notes = "세션정보로 자신을 조회합니다.")
   @ApiResponses(
       value = {
           @ApiResponse(code = 200, message = "Successful operation."),

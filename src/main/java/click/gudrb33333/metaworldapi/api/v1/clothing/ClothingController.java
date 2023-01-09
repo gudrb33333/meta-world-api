@@ -38,7 +38,15 @@ public class ClothingController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @ApiOperation(value = "의상을 생성한다.")
+  @ApiOperation(
+      value = "의상을 생성한다.",
+      notes =
+      """
+        로컬파일을 InputStream으로 받아 S3로 업로드 합니다.<br><br>
+      
+        associateLink는 참고 사이트 URL입니다.<br>
+        publicType이 private인 경우 자기 자신만 사용가능합니다.
+      """)
   @ApiResponses(
       value = {
         @ApiResponse(code = 201, message = "successful creation."),
