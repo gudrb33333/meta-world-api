@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = {"의상 API"})
+@Api(tags = {"3. 의상 API"})
 @RequestMapping("/api/v1/clothing")
 public class ClothingController {
 

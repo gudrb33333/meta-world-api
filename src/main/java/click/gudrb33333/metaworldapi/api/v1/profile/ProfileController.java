@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
-@Api(tags = {"프로필 API"})
+@Api(tags = {"1. 프로필 API"})
 @RequestMapping("/api/v1/profiles")
 @RestController("meta-world-api ProfileController")
 public class ProfileController {

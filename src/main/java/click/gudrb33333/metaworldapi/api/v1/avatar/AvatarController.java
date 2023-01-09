@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = {"아바타 API"})
+@Api(tags = {"2. 아바타 API"})
 @RequestMapping("/api/v1/avatars")
 public class AvatarController {
 

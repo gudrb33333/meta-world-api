@@ -24,7 +24,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
-@Api(tags = {"회원인증 API"})
+@Api(tags = {"5. 회원인증 API"})
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
