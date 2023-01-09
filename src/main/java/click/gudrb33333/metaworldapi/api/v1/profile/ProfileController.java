@@ -2,10 +2,9 @@ package click.gudrb33333.metaworldapi.api.v1.profile;
 
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileCreateDto;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileResponseDto;
+import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileSearchCondition;
 import click.gudrb33333.metaworldapi.api.v1.profile.dto.ProfileUpdateDto;
 import click.gudrb33333.metaworldapi.entity.Member;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
-import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.util.SessionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +15,8 @@ import java.text.ParseException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jets3t.service.CloudFrontServiceException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @Api(tags = {"프로필 API"})
@@ -49,6 +51,12 @@ public class ProfileController {
     Member member = sessionUtil.getCurrentMember();
     profileService.createProfile(profileCreateDto, member);
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @GetMapping
+  @ApiOperation(value = "조건에 맞는 프로필을 페이지로 조회한다.")
+  public Page<ProfileResponseDto> findAllWithCondition(@Valid ProfileSearchCondition condition, @ApiIgnore Pageable pageable) {
+    return profileService.findAllWithCondition(condition, pageable);
   }
 
   @GetMapping("/me")
