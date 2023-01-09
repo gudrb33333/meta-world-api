@@ -1,4 +1,4 @@
-package click.gudrb33333.metaworldapi.repository;
+package click.gudrb33333.metaworldapi.repository.avatar;
 
 import static click.gudrb33333.metaworldapi.entity.QAsset.asset;
 import static click.gudrb33333.metaworldapi.entity.QMemberAsset.memberAsset;
