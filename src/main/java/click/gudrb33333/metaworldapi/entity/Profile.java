@@ -48,7 +48,7 @@ public class Profile {
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
-  @JoinColumn(name = "asset_id")
+  @JoinColumn(name = "asset_id", unique = true)
   @OneToOne(targetEntity = Avatar.class, fetch = FetchType.EAGER)
   private Avatar avatar;
 
