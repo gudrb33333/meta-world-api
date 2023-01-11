@@ -62,7 +62,7 @@ public class Member {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  @JoinColumn(name = "profile_id")
+  @JoinColumn(name = "profile_id", unique = true)
   @OneToOne(targetEntity = Profile.class, fetch = FetchType.LAZY)
   private Profile profile;
 
