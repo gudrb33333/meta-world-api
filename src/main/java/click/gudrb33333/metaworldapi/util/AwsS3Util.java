@@ -8,7 +8,9 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.IOUtils;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,12 +52,16 @@ public class AwsS3Util {
   public void uploadUrlFileToS3(
       UUID fileUuid, ExtensionType extension, S3DirectoryType s3DirectoryType, String url) {
     String storeFileName = fileUuid + "." + extension.getValue();
-
-    // TODO: fix no content length
+    
     try (InputStream inputStream = new BufferedInputStream(new URL(url).openStream())) {
+      ObjectMetadata objectMetadata = new ObjectMetadata();
+      byte[] bytes = IOUtils.toByteArray(inputStream);
+      objectMetadata.setContentLength(bytes.length);
+      ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+
       amazonS3Client.putObject(
           new PutObjectRequest(
-                  bucketName + s3DirectoryType.getValue(), storeFileName, inputStream, null)
+                  bucketName + s3DirectoryType.getValue(), storeFileName, byteArrayInputStream, objectMetadata)
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
       throw new CatchedException(
