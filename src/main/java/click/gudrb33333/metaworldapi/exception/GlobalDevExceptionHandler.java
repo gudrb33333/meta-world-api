@@ -84,11 +84,6 @@ public class GlobalDevExceptionHandler {
     return errorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler({CommonException.class})
-  public ResponseEntity<?> handleCommonException(CommonException e) {
-    return errorResponse(e, e.getStatus());
-  }
-
   protected ResponseEntity<ExceptionMessage> errorResponse(Throwable throwable, HttpStatus status) {
     if (null != throwable) {
       throwable.printStackTrace();

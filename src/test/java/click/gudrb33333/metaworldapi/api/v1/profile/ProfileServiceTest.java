@@ -18,7 +18,6 @@ import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;

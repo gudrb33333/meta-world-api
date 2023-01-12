@@ -62,12 +62,6 @@ public class GlobalProdExceptionHandler {
     return errorResponse("500 INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler({CommonException.class})
-  public ResponseEntity<?> handleCommonException(CommonException e) {
-    HttpStatus status = e.getStatus();
-    return errorResponse(String.valueOf(status), status);
-  }
-
   protected ResponseEntity<String> errorResponse(String message, HttpStatus status) {
     return new ResponseEntity<String>(message, new HttpHeaders(), status);
   }

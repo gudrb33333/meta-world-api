@@ -85,19 +85,6 @@ class GlobalProdExceptionHandlerTest {
   }
 
   @Test
-  void handleCommonException() {
-    CommonException testCommonException =
-        new CommonException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
-
-    ResponseEntity<ExceptionMessage> response =
-        (ResponseEntity<ExceptionMessage>)
-            globalProdExceptionHandler.handleCommonException(testCommonException);
-
-    assertThat(response.getStatusCode()).isEqualTo(testCommonException.getStatus());
-    assertThat(response.getStatusCodeValue()).isEqualTo(404);
-  }
-
-  @Test
   void errorResponse() {
     HttpStatus testStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     String testStr = "Internal Server Error";
