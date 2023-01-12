@@ -9,7 +9,6 @@ import click.gudrb33333.metaworldapi.api.v1.auth.dto.MemberCreateDto;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
@@ -23,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +51,7 @@ class AuthServiceTest {
               () -> {
                 authService.signup(testMemberCreateDto);
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(DataIntegrityViolationException.class)
           .hasMessageContaining(ErrorMessage.CONFLICT_EMAIL);
     }
 

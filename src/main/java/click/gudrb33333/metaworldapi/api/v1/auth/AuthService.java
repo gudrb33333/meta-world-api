@@ -4,7 +4,6 @@ import click.gudrb33333.metaworldapi.api.v1.auth.dto.MemberCreateDto;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -33,7 +32,7 @@ public class AuthService implements UserDetailsService {
         .findByEmail(memberCreateDto.getEmail())
         .ifPresent(
             m -> {
-              throw new CommonException(ErrorMessage.CONFLICT_EMAIL, HttpStatus.CONFLICT);
+              throw new DataIntegrityViolationException(ErrorMessage.CONFLICT_EMAIL);
             });
 
     String encodedPassword =

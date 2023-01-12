@@ -24,6 +24,7 @@ import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.jets3t.service.CloudFrontServiceException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class ProfileService {
         .findMemberWithProfile(member)
         .ifPresent(
             (x) -> {
-              throw new CommonException(ErrorMessage.CONFLICT_PROFILE, HttpStatus.CONFLICT);
+              throw new DataIntegrityViolationException(ErrorMessage.CONFLICT_PROFILE);
             });
 
     UUID fileUuid = UUID.randomUUID();
