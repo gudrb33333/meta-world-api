@@ -10,6 +10,7 @@ import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -58,7 +59,7 @@ public class AuthService implements UserDetailsService {
             .findByEmailAndLoginType(email, LoginType.LOCAL)
             .orElseThrow(
                 () -> {
-                  throw new CommonException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
+                  throw new EntityNotFoundException(ErrorMessage.NOT_FOUND_MEMBER);
                 });
 
     List<GrantedAuthority> authorities = new ArrayList<>();

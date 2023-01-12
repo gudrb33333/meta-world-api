@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 import java.text.ParseException;
+import javax.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -30,6 +31,13 @@ public class GlobalDevExceptionHandler {
 
   public ResponseEntity<?> handleUnAuthenticationException(Exception e) {
     return errorResponse(e, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler({
+      EntityNotFoundException.class
+  })
+  public ResponseEntity<?> handleNotFoundException(EntityNotFoundException e) {
+    return errorResponse(e, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler({

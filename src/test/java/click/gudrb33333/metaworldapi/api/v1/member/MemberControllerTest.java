@@ -10,8 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.support.WithAuthMember;
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ class MemberControllerTest {
               get("/api/v1/members/me").session(mockHttpSession))
           .andExpect(status().isNotFound())
           .andExpect(
-              result -> assertTrue(result.getResolvedException() instanceof CommonException))
+              result -> assertTrue(result.getResolvedException() instanceof EntityNotFoundException))
           .andExpect(
               result ->
                   assertEquals("member not found.", result.getResolvedException().getMessage()));

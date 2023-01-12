@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.persistence.EntityNotFoundException;
 import org.jets3t.service.CloudFrontServiceException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -210,7 +211,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.findSigninMemberProfile(testMember);
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(EntityNotFoundException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
     }
 
@@ -257,7 +258,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(EntityNotFoundException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
     }
 
@@ -295,7 +296,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.deleteSigninMemberProfile(testMember);
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(EntityNotFoundException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
     }
 

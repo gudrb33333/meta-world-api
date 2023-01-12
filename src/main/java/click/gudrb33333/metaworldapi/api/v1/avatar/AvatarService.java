@@ -8,15 +8,14 @@ import click.gudrb33333.metaworldapi.entity.MemberAsset;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
 import java.io.IOException;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +60,7 @@ public class AvatarService {
             .findById(uuid)
             .orElseThrow(
                 () -> {
-                  throw new CommonException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
+                  throw new EntityNotFoundException(ErrorMessage.NOT_FOUND_AVATAR);
                 });
 
     return AvatarResponseDto.builder()

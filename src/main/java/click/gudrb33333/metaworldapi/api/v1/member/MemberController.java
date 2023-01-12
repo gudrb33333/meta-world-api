@@ -2,15 +2,14 @@ package click.gudrb33333.metaworldapi.api.v1.member;
 
 import click.gudrb33333.metaworldapi.api.v1.member.dto.MemberResponseDto;
 import click.gudrb33333.metaworldapi.entity.Member;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.util.SessionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,7 @@ public class MemberController {
     Member member = sessionUtil.getCurrentMember();
 
     if(member == null){
-      throw new CommonException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
+      throw new EntityNotFoundException(ErrorMessage.NOT_FOUND_MEMBER);
     }
 
     MemberResponseDto memberResponseDto =

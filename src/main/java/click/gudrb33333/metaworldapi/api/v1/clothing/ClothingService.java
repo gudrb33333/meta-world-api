@@ -17,6 +17,7 @@ import click.gudrb33333.metaworldapi.util.AwsS3Util;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.jets3t.service.CloudFrontServiceException;
 import org.springframework.http.HttpStatus;
@@ -71,7 +72,7 @@ public class ClothingService {
             .findById(uuid)
             .orElseThrow(
                 () -> {
-                  throw new CommonException(ErrorMessage.NOT_FOUND_CLOTHING, HttpStatus.NOT_FOUND);
+                  throw new EntityNotFoundException(ErrorMessage.NOT_FOUND_CLOTHING);
                 });
 
     if (clothing.getPublicType() != PublicType.PUBLIC) {

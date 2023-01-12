@@ -6,12 +6,12 @@ import static org.mockito.BDDMockito.given;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -84,7 +84,7 @@ class CustomAuthenticationSuccessHandlerTest {
                 customAuthenticationSuccessHandler.onAuthenticationSuccess(
                     request, response, authRequest);
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(EntityNotFoundException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_MEMBER);
     }
   }

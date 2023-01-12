@@ -15,6 +15,7 @@ import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -83,7 +84,7 @@ class AuthServiceTest {
               () -> {
                 authService.loadUserByUsername(testMember.getEmail());
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(EntityNotFoundException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_MEMBER);
     }
 

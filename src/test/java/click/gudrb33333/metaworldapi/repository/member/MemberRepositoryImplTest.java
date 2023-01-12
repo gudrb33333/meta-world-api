@@ -8,13 +8,12 @@ import static org.mockito.BDDMockito.given;
 
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.Profile;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
-import click.gudrb33333.metaworldapi.repository.member.MemberRepositoryImpl;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -61,7 +60,7 @@ class MemberRepositoryImplTest {
             .findMemberWithProfile(testMember)
             .orElseThrow(
                 () -> {
-                  throw new CommonException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
+                  throw new EntityNotFoundException(ErrorMessage.NOT_FOUND_MEMBER);
                 });
 
     assertThat(findMember.getId()).isEqualTo(testMember.getId());

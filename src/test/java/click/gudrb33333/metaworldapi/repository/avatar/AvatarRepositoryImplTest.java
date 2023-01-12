@@ -16,10 +16,8 @@ import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
+import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
-import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepositoryImpl;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -27,6 +25,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -81,7 +80,7 @@ class AvatarRepositoryImplTest {
     Avatar findAvatar =
         OptionalFindAvatar.orElseThrow(
             () -> {
-              throw new CommonException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
+              throw new EntityNotFoundException(ErrorMessage.NOT_FOUND_AVATAR);
             });
 
     assertThat(findAvatar.getId()).isEqualTo(testAvatar.getId());

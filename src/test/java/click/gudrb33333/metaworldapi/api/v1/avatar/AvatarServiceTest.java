@@ -16,7 +16,6 @@ import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
@@ -26,6 +25,7 @@ import click.gudrb33333.metaworldapi.util.SessionUtil;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Nested;
@@ -104,7 +104,7 @@ class AvatarServiceTest {
               () -> {
                 avatarService.findOneAvatar(testAssetId);
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(EntityNotFoundException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_AVATAR);
     }
 

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Optional;
 import java.util.UUID;
+import javax.persistence.EntityNotFoundException;
 import org.jets3t.service.CloudFrontServiceException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -113,7 +114,7 @@ class ClothingServiceTest {
               () -> {
                 clothingService.findOneClothing(testUUID, testMember);
               })
-          .isInstanceOf(CommonException.class)
+          .isInstanceOf(EntityNotFoundException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_CLOTHING);
     }
 
