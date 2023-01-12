@@ -167,7 +167,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.findAllWithCondition(testProfileSearchCondition, pageable);
               })
-          .isInstanceOf(CommonException.class);
+          .isInstanceOf(IllegalStateException.class);
     }
 
     @Test

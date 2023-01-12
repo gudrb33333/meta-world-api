@@ -11,7 +11,6 @@ import click.gudrb33333.metaworldapi.entity.Profile;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
@@ -27,7 +26,6 @@ import org.jets3t.service.CloudFrontServiceException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -171,8 +169,8 @@ public class ProfileService {
           awsS3Util.createSignedUrl(
               S3DirectoryType.AVATAR, profile.getAvatar().getS3AssetUUID(), 3600);
     } catch (IOException | ParseException | CloudFrontServiceException e) {
-      throw new CommonException(
-          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new IllegalStateException(
+          ErrorMessage.AWS_S3_UTIL_IO_ERROR);
     }
 
     return ProfileResponseDto.builder()

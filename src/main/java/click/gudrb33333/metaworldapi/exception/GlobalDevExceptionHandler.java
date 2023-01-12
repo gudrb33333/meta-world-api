@@ -67,7 +67,8 @@ public class GlobalDevExceptionHandler {
     IOException.class,
     ParseException.class,
     JsonParseException.class,
-    JsonMappingException.class
+    JsonMappingException.class,
+    IllegalStateException.class
   })
   public ResponseEntity<?> handleParseException(Exception e) {
     return errorResponse(e, HttpStatus.BAD_REQUEST);

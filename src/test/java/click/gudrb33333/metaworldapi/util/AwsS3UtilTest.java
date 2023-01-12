@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import com.amazonaws.services.s3.AmazonS3Client;
 import java.io.IOException;
@@ -46,7 +45,7 @@ class AwsS3UtilTest {
             () -> {
               awsS3Util.uploadUrlFileToS3(fileUuid, extension, s3DirectoryType, url);
             })
-        .isInstanceOf(CommonException.class)
+        .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining(ErrorMessage.AWS_S3_UTIL_IO_ERROR);
   }
 
@@ -75,7 +74,7 @@ class AwsS3UtilTest {
               awsS3Util.uploadLocalFileToS3(
                   fileUuid, extension, s3DirectoryType, ioExceptionTestFile);
             })
-        .isInstanceOf(CommonException.class)
+        .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining(ErrorMessage.AWS_S3_UTIL_IO_ERROR);
   }
 

@@ -1,7 +1,6 @@
 package click.gudrb33333.metaworldapi.util;
 
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -11,9 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -30,7 +27,6 @@ import org.jets3t.service.CloudFrontService;
 import org.jets3t.service.CloudFrontServiceException;
 import org.jets3t.service.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,8 +60,7 @@ public class AwsS3Util {
                   bucketName + s3DirectoryType.getValue(), storeFileName, byteArrayInputStream, objectMetadata)
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
-      throw new CommonException(
-          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.BAD_REQUEST);
+      throw new IllegalStateException(ErrorMessage.AWS_S3_UTIL_IO_ERROR);
     }
   }
 
@@ -87,8 +82,7 @@ public class AwsS3Util {
                   objectMetadata)
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
-      throw new CommonException(
-          ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.BAD_REQUEST);
+      throw new IllegalStateException(ErrorMessage.AWS_S3_UTIL_IO_ERROR);
     }
   }
 
