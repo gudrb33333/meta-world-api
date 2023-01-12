@@ -15,12 +15,12 @@ import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.clothing.ClothingRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
 import click.gudrb33333.metaworldapi.util.AwsS3Util;
 import java.io.IOException;
+
 import java.text.ParseException;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,8 +32,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.access.AccessDeniedException;
 
 @ExtendWith(MockitoExtension.class)
 class ClothingServiceTest {
@@ -145,8 +145,8 @@ class ClothingServiceTest {
                 () -> {
                   clothingService.findOneClothing(testUUID, testMember);
                 })
-            .isInstanceOf(CommonException.class)
-            .hasMessageContaining(HttpStatus.FORBIDDEN.toString());
+            .isInstanceOf(AccessDeniedException.class)
+            .hasMessageContaining(ErrorMessage.ACCESS_DENIED);
       }
 
       @Test

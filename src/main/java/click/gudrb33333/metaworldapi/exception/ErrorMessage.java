@@ -17,4 +17,5 @@ public class ErrorMessage {
 
   // FORBIDDEN
   public static final String NOT_FOUND_SESSION = "session not found.";
+  public static final String ACCESS_DENIED = "access denied.";
 }

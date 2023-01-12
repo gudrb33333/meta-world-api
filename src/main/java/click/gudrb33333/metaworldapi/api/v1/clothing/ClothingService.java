@@ -9,7 +9,6 @@ import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.clothing.ClothingRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
@@ -20,7 +19,7 @@ import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.jets3t.service.CloudFrontServiceException;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,7 +79,7 @@ public class ClothingService {
           .findByMemberAndAsset(sessionMember, clothing)
           .orElseThrow(
               () -> {
-                throw new CommonException(HttpStatus.FORBIDDEN.toString(), HttpStatus.FORBIDDEN);
+                throw new AccessDeniedException(ErrorMessage.ACCESS_DENIED);
               });
     }
 

@@ -17,6 +17,7 @@ import org.springframework.data.rest.webmvc.support.ExceptionMessage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -34,11 +35,20 @@ public class GlobalDevExceptionHandler {
   }
 
   @ExceptionHandler({
+      AccessDeniedException.class
+  })
+  public ResponseEntity<?> handleAccessDeniedExceptionException(AccessDeniedException e) {
+    return errorResponse(e, HttpStatus.FORBIDDEN);
+  }
+
+
+  @ExceptionHandler({
       EntityNotFoundException.class
   })
   public ResponseEntity<?> handleNotFoundException(EntityNotFoundException e) {
     return errorResponse(e, HttpStatus.NOT_FOUND);
   }
+
 
   @ExceptionHandler({
     DataIntegrityViolationException.class,
