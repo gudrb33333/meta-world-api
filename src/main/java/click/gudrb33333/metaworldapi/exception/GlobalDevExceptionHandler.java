@@ -41,14 +41,12 @@ public class GlobalDevExceptionHandler {
     return errorResponse(e, HttpStatus.FORBIDDEN);
   }
 
-
   @ExceptionHandler({
       EntityNotFoundException.class
   })
   public ResponseEntity<?> handleNotFoundException(EntityNotFoundException e) {
     return errorResponse(e, HttpStatus.NOT_FOUND);
   }
-
 
   @ExceptionHandler({
     DataIntegrityViolationException.class,

@@ -89,7 +89,7 @@ class GlobalProdExceptionHandlerTest {
     HttpStatus testStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     String testStr = "Internal Server Error";
 
-    ResponseEntity<String> response =
+    ResponseEntity<Object> response =
         globalProdExceptionHandler.errorResponse(testStr, testStatus);
 
     assertThat(response.getBody()).isEqualTo("Internal Server Error");
