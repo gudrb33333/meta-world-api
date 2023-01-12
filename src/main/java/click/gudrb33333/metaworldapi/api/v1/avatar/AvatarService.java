@@ -8,7 +8,7 @@ import click.gudrb33333.metaworldapi.entity.MemberAsset;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
@@ -61,7 +61,7 @@ public class AvatarService {
             .findById(uuid)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
                 });
 
     return AvatarResponseDto.builder()

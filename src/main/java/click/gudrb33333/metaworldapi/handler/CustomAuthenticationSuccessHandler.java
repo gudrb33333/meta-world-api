@@ -2,7 +2,7 @@ package click.gudrb33333.metaworldapi.handler;
 
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +34,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             .findByEmailAndLoginType(userSpringSecurity.getUsername(), LoginType.LOCAL)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
                 });
 
     session.setAttribute("role", String.valueOf(userSpringSecurity.getAuthorities()));

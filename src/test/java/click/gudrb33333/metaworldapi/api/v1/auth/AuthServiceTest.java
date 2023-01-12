@@ -9,7 +9,7 @@ import click.gudrb33333.metaworldapi.api.v1.auth.dto.MemberCreateDto;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
@@ -50,7 +50,7 @@ class AuthServiceTest {
               () -> {
                 authService.signup(testMemberCreateDto);
               })
-          .isInstanceOf(CatchedException.class)
+          .isInstanceOf(CommonException.class)
           .hasMessageContaining(ErrorMessage.CONFLICT_EMAIL);
     }
 
@@ -83,7 +83,7 @@ class AuthServiceTest {
               () -> {
                 authService.loadUserByUsername(testMember.getEmail());
               })
-          .isInstanceOf(CatchedException.class)
+          .isInstanceOf(CommonException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_MEMBER);
     }
 

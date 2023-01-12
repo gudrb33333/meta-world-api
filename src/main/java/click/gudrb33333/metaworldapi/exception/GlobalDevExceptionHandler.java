@@ -65,8 +65,8 @@ public class GlobalDevExceptionHandler {
     return errorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler({CatchedException.class})
-  public ResponseEntity<?> handleCatchedException(CatchedException e) {
+  @ExceptionHandler({CommonException.class})
+  public ResponseEntity<?> handleCommonException(CommonException e) {
     return errorResponse(e, e.getStatus());
   }
 

@@ -11,7 +11,7 @@ import click.gudrb33333.metaworldapi.entity.Profile;
 import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
@@ -45,7 +45,7 @@ public class ProfileService {
         .findMemberWithProfile(member)
         .ifPresent(
             (x) -> {
-              throw new CatchedException(ErrorMessage.CONFLICT_PROFILE, HttpStatus.CONFLICT);
+              throw new CommonException(ErrorMessage.CONFLICT_PROFILE, HttpStatus.CONFLICT);
             });
 
     UUID fileUuid = UUID.randomUUID();
@@ -85,7 +85,7 @@ public class ProfileService {
             .findMemberWithProfile(member)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
                 });
 
     Profile profile = memberWithProfile.getProfile();
@@ -106,7 +106,7 @@ public class ProfileService {
             .findMemberWithProfile(member)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
                 });
 
     Profile profile = memberWithProfile.getProfile();
@@ -142,7 +142,7 @@ public class ProfileService {
             .findMemberWithProfile(member)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
                 });
 
     Profile profile = memberWithProfile.getProfile();
@@ -169,7 +169,7 @@ public class ProfileService {
           awsS3Util.createSignedUrl(
               S3DirectoryType.AVATAR, profile.getAvatar().getS3AssetUUID(), 3600);
     } catch (IOException | ParseException | CloudFrontServiceException e) {
-      throw new CatchedException(
+      throw new CommonException(
           ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

@@ -1,7 +1,7 @@
 package click.gudrb33333.metaworldapi.util;
 
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -64,7 +64,7 @@ public class AwsS3Util {
                   bucketName + s3DirectoryType.getValue(), storeFileName, byteArrayInputStream, objectMetadata)
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
-      throw new CatchedException(
+      throw new CommonException(
           ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.BAD_REQUEST);
     }
   }
@@ -87,7 +87,7 @@ public class AwsS3Util {
                   objectMetadata)
               .withCannedAcl(CannedAccessControlList.PublicRead));
     } catch (IOException e) {
-      throw new CatchedException(
+      throw new CommonException(
           ErrorMessage.AWS_S3_UTIL_IO_ERROR, HttpStatus.BAD_REQUEST);
     }
   }

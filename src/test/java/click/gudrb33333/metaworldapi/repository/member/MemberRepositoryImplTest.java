@@ -8,7 +8,7 @@ import static org.mockito.BDDMockito.given;
 
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.Profile;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepositoryImpl;
 import com.querydsl.core.types.Predicate;
@@ -61,7 +61,7 @@ class MemberRepositoryImplTest {
             .findMemberWithProfile(testMember)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
                 });
 
     assertThat(findMember.getId()).isEqualTo(testMember.getId());

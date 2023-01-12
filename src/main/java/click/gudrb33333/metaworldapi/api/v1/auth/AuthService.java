@@ -4,7 +4,7 @@ import click.gudrb33333.metaworldapi.api.v1.auth.dto.MemberCreateDto;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
@@ -32,7 +32,7 @@ public class AuthService implements UserDetailsService {
         .findByEmail(memberCreateDto.getEmail())
         .ifPresent(
             m -> {
-              throw new CatchedException(ErrorMessage.CONFLICT_EMAIL, HttpStatus.CONFLICT);
+              throw new CommonException(ErrorMessage.CONFLICT_EMAIL, HttpStatus.CONFLICT);
             });
 
     String encodedPassword =
@@ -58,7 +58,7 @@ public class AuthService implements UserDetailsService {
             .findByEmailAndLoginType(email, LoginType.LOCAL)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_MEMBER, HttpStatus.NOT_FOUND);
                 });
 
     List<GrantedAuthority> authorities = new ArrayList<>();

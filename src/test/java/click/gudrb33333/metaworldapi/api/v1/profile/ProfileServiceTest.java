@@ -18,7 +18,7 @@ import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.GenderType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
@@ -97,7 +97,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.createProfile(testProfileCreateDto, testMember);
               })
-          .isInstanceOf(CatchedException.class)
+          .isInstanceOf(CommonException.class)
           .hasMessageContaining(ErrorMessage.CONFLICT_PROFILE);
     }
 
@@ -165,7 +165,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.findAllWithCondition(testProfileSearchCondition, pageable);
               })
-          .isInstanceOf(CatchedException.class);
+          .isInstanceOf(CommonException.class);
     }
 
     @Test
@@ -210,7 +210,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.findSigninMemberProfile(testMember);
               })
-          .isInstanceOf(CatchedException.class)
+          .isInstanceOf(CommonException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
     }
 
@@ -257,7 +257,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.updateSigninMemberProfile(testProfileUpdateDto, testMember);
               })
-          .isInstanceOf(CatchedException.class)
+          .isInstanceOf(CommonException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
     }
 
@@ -295,7 +295,7 @@ class ProfileServiceTest {
               () -> {
                 profileService.deleteSigninMemberProfile(testMember);
               })
-          .isInstanceOf(CatchedException.class)
+          .isInstanceOf(CommonException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_PROFILE);
     }
 

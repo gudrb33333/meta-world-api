@@ -9,7 +9,7 @@ import click.gudrb33333.metaworldapi.entity.type.AssetType;
 import click.gudrb33333.metaworldapi.entity.type.ExtensionType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.clothing.ClothingRepository;
 import click.gudrb33333.metaworldapi.repository.memberasset.MemberAssetRepository;
@@ -71,7 +71,7 @@ public class ClothingService {
             .findById(uuid)
             .orElseThrow(
                 () -> {
-                  throw new CatchedException(ErrorMessage.NOT_FOUND_CLOTHING, HttpStatus.NOT_FOUND);
+                  throw new CommonException(ErrorMessage.NOT_FOUND_CLOTHING, HttpStatus.NOT_FOUND);
                 });
 
     if (clothing.getPublicType() != PublicType.PUBLIC) {
@@ -79,7 +79,7 @@ public class ClothingService {
           .findByMemberAndAsset(sessionMember, clothing)
           .orElseThrow(
               () -> {
-                throw new CatchedException(HttpStatus.FORBIDDEN.toString(), HttpStatus.FORBIDDEN);
+                throw new CommonException(HttpStatus.FORBIDDEN.toString(), HttpStatus.FORBIDDEN);
               });
     }
 

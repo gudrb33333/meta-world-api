@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 import click.gudrb33333.metaworldapi.entity.Member;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.member.MemberRepository;
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ class CustomAuthenticationSuccessHandlerTest {
                 customAuthenticationSuccessHandler.onAuthenticationSuccess(
                     request, response, authRequest);
               })
-          .isInstanceOf(CatchedException.class)
+          .isInstanceOf(CommonException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_MEMBER);
     }
   }

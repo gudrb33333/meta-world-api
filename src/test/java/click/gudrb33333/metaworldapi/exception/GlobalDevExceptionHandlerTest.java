@@ -80,15 +80,15 @@ class GlobalDevExceptionHandlerTest {
   }
 
   @Test
-  void handleCatchedException() {
-    CatchedException testCatchedException =
-        new CatchedException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
+  void handleCommonException() {
+    CommonException testCommonException =
+        new CommonException(ErrorMessage.NOT_FOUND_PROFILE, HttpStatus.NOT_FOUND);
 
     ResponseEntity<ExceptionMessage> response =
         (ResponseEntity<ExceptionMessage>)
-            globalDevExceptionHandler.handleCatchedException(testCatchedException);
+            globalDevExceptionHandler.handleCommonException(testCommonException);
 
-    assertThat(response.getStatusCode()).isEqualTo(testCatchedException.getStatus());
+    assertThat(response.getStatusCode()).isEqualTo(testCommonException.getStatus());
     assertThat(response.getStatusCodeValue()).isEqualTo(404);
   }
 

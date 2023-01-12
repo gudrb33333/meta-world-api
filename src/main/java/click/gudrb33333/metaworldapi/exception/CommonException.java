@@ -4,11 +4,11 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class CatchedException extends RuntimeException {
+public class CommonException extends RuntimeException {
   private final String message;
   private final HttpStatus status;
 
-  public CatchedException(String message, HttpStatus status) {
+  public CommonException(String message, HttpStatus status) {
     this.message = message;
     this.status = status;
   }

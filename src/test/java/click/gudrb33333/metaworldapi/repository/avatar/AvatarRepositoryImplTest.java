@@ -17,7 +17,7 @@ import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.PublicType;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.entity.type.S3DirectoryType;
-import click.gudrb33333.metaworldapi.exception.CatchedException;
+import click.gudrb33333.metaworldapi.exception.CommonException;
 import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import click.gudrb33333.metaworldapi.repository.avatar.AvatarRepositoryImpl;
 import com.querydsl.core.types.OrderSpecifier;
@@ -81,7 +81,7 @@ class AvatarRepositoryImplTest {
     Avatar findAvatar =
         OptionalFindAvatar.orElseThrow(
             () -> {
-              throw new CatchedException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
+              throw new CommonException(ErrorMessage.NOT_FOUND_AVATAR, HttpStatus.NOT_FOUND);
             });
 
     assertThat(findAvatar.getId()).isEqualTo(testAvatar.getId());
