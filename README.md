@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/Swagger-6DB33F?style=flat-square&logoColor=white"/>
   <img src="https://img.shields.io/badge/JaCoCo-6DB33F?style=flat-square&logoColor=white"/>
   <img src="https://img.shields.io/badge/coverage-99%25-blue"/>
-  <img src="https://img.shields.io/badge/tests-80%20passed-brightgreen"/>
+  <img src="https://img.shields.io/badge/tests-82%20passed-brightgreen"/>
 </div>
 <br>
 

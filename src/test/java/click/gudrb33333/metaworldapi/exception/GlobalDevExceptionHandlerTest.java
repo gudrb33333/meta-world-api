@@ -39,6 +39,36 @@ class GlobalDevExceptionHandlerTest {
   }
 
   @Test
+  void handleAccessDeniedExceptionException() {
+    AccessDeniedException testException =
+        new AccessDeniedException("test access denied exception occurred");
+
+    ResponseEntity<ExceptionMessage> response =
+        (ResponseEntity<ExceptionMessage>)
+            globalDevExceptionHandler.handleAccessDeniedExceptionException(testException);
+
+    assertThat(Objects.requireNonNull(response.getBody()).getMessage())
+        .isEqualTo("test access denied exception occurred");
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    assertThat(response.getStatusCodeValue()).isEqualTo(403);
+  }
+
+  @Test
+  void handleNotFoundException() {
+    EntityNotFoundException testException =
+        new EntityNotFoundException("test entity not found exception occurred");
+
+    ResponseEntity<ExceptionMessage> response =
+        (ResponseEntity<ExceptionMessage>)
+            globalDevExceptionHandler.handleNotFoundException(testException);
+
+    assertThat(Objects.requireNonNull(response.getBody()).getMessage())
+        .isEqualTo("test entity not found exception occurred");
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    assertThat(response.getStatusCodeValue()).isEqualTo(404);
+  }
+
+  @Test
   void handleConflictException() {
     DataIntegrityViolationException testException =
         new DataIntegrityViolationException(
