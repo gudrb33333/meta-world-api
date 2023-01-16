@@ -74,7 +74,7 @@ public class GlobalDevExceptionHandler {
 
   @ExceptionHandler({InvalidKeyException.class, NoSuchAlgorithmException.class})
   public ResponseEntity<?> handleHashException(Exception e) {
-    return errorResponse(new Exception("Encrypt/Decrypt key is requested"), HttpStatus.LOCKED);
+    return errorResponse(new Exception("encrypt/decrypt key is requested"), HttpStatus.LOCKED);
   }
 
   @ExceptionHandler({Exception.class})

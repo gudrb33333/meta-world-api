@@ -73,12 +73,12 @@ public class GlobalProdExceptionHandler {
 
   @ExceptionHandler({InvalidKeyException.class, NoSuchAlgorithmException.class})
   public ResponseEntity<?> handleHashException(Exception e) {
-    return errorResponse(e.getMessage(), HttpStatus.LOCKED);
+    return errorResponse("encrypt/decrypt key is requested", HttpStatus.LOCKED);
   }
 
   @ExceptionHandler({Exception.class})
   public ResponseEntity<?> handleAnyException(Exception e) {
-    return errorResponse("500 INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+    return errorResponse("internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   protected ResponseEntity<Object> errorResponse(String message, HttpStatus status) {
