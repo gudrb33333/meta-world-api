@@ -71,7 +71,7 @@ class AuthControllerTest {
         Member.builder().email("test@test.com").password("testPassword").build();
 
     @Test
-    void whenFindMember() throws Exception {
+    void whenFoundMember() throws Exception {
       String content = objectMapper.writeValueAsString(testMemberLoginDto);
 
       List<GrantedAuthority> authorities = new ArrayList<>();
@@ -93,6 +93,9 @@ class AuthControllerTest {
     @Test
     void whenNotFoundMember() throws Exception {
       String content = objectMapper.writeValueAsString(testMemberLoginDto);
+
+      given(authService.loadUserByUsername(testMemberLoginDto.getEmail()))
+          .willReturn(null);
 
       mockMvc
           .perform(
