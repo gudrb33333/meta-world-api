@@ -1,6 +1,7 @@
 package click.gudrb33333.metaworldapi.filter;
 
 import click.gudrb33333.metaworldapi.api.v1.auth.dto.MemberLoginDto;
+import click.gudrb33333.metaworldapi.exception.ErrorMessage;
 import java.io.IOException;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +23,11 @@ public class CustomUsernamePasswordAuthenticationFilter
       HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
     if (!request.getMethod().equals("POST")) {
       throw new AuthenticationServiceException(
-          "Authentication method not supported:" + request.getMethod());
+          ErrorMessage.NOT_SUPPORT_METHOD + request.getMethod());
     }
 
-    if(!request.getContentType().equals(MimeTypeUtils.APPLICATION_JSON_VALUE)){
-      throw new AuthenticationServiceException(
-          "Authentication request is not JSON");
+    if (!request.getContentType().equals(MimeTypeUtils.APPLICATION_JSON_VALUE)) {
+      throw new AuthenticationServiceException(ErrorMessage.REQUEST_IS_NOT_JSON);
     }
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -44,14 +44,13 @@ public class CustomUsernamePasswordAuthenticationFilter
 
       return this.getAuthenticationManager().authenticate(authRequest);
     } catch (IOException e) {
-      throw new AuthenticationServiceException(
-          "Request Content-Type(application/json) Parsing Error");
+      throw new AuthenticationServiceException(ErrorMessage.REQUEST_CONTENT_TYPE_PARSING_ERROR);
     }
   }
 
-//  //Unused
-//  @Override
-//  public void setPostOnly(boolean postOnly) {
-//    this.postOnly = postOnly;
-//  }
+  //  //Unused
+  //  @Override
+  //  public void setPostOnly(boolean postOnly) {
+  //    this.postOnly = postOnly;
+  //  }
 }

@@ -18,4 +18,10 @@ public class ErrorMessage {
   // FORBIDDEN
   public static final String NOT_FOUND_SESSION = "session not found.";
   public static final String ACCESS_DENIED = "access denied.";
+
+  // BAD REQUEST
+  public static final String NOT_SUPPORT_METHOD = "Authentication method not supported:";
+  public static final String REQUEST_IS_NOT_JSON = "Authentication request is not JSON";
+  public static final String REQUEST_CONTENT_TYPE_PARSING_ERROR =
+      "Request Content-Type(application/json) Parsing Error";
 }
