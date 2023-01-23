@@ -47,12 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    http.sessionManagement()
-        .maximumSessions(2000)
-        .maxSessionsPreventsLogin(true)
-        .sessionRegistry(sessionRegistry())
-        .expiredUrl("/");
-
     // security access url
     http.httpBasic()
         .disable()
