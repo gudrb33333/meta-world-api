@@ -3,6 +3,7 @@ package click.gudrb33333.metaworldapi.config;
 import click.gudrb33333.metaworldapi.api.v1.auth.AuthService;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.filter.CustomUsernamePasswordAuthenticationFilter;
+import click.gudrb33333.metaworldapi.handler.CustomAuthenticationEntryPoint;
 import click.gudrb33333.metaworldapi.handler.CustomAuthenticationFailureHandler;
 import click.gudrb33333.metaworldapi.handler.CustomAuthenticationSuccessHandler;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
@@ -24,6 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final PasswordEncoderUtil passwordEncoderUtil;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
   private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+  private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
   private final CorsConfig corsConfig;
 
   private static final String[] PERMIT_ALL_LIST = {
@@ -46,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+
+    http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
 
     // security access url
     http.httpBasic()
