@@ -3,6 +3,7 @@ package click.gudrb33333.metaworldapi.config;
 import click.gudrb33333.metaworldapi.api.v1.auth.AuthService;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.filter.CustomUsernamePasswordAuthenticationFilter;
+import click.gudrb33333.metaworldapi.handler.CustomAuthenticationFailureHandler;
 import click.gudrb33333.metaworldapi.handler.CustomAuthenticationSuccessHandler;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthService authService;
   private final PasswordEncoderUtil passwordEncoderUtil;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+  private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
   private final CorsConfig corsConfig;
 
   private static final String[] PERMIT_ALL_LIST = {
@@ -86,6 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     authFilter.setUsernameParameter("email");
     authFilter.setPasswordParameter("password");
     authFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
+    authFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler);
 
     return authFilter;
   }
