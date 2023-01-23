@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,7 +85,7 @@ class AuthServiceTest {
               () -> {
                 authService.loadUserByUsername(testMember.getEmail());
               })
-          .isInstanceOf(EntityNotFoundException.class)
+          .isInstanceOf(AuthenticationServiceException.class)
           .hasMessageContaining(ErrorMessage.NOT_FOUND_MEMBER);
     }
 

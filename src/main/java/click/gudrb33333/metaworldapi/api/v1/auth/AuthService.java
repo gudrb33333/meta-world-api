@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -58,7 +59,7 @@ public class AuthService implements UserDetailsService {
             .findByEmailAndLoginType(email, LoginType.LOCAL)
             .orElseThrow(
                 () -> {
-                  throw new EntityNotFoundException(ErrorMessage.NOT_FOUND_MEMBER);
+                  throw new AuthenticationServiceException(ErrorMessage.NOT_FOUND_MEMBER);
                 });
 
     List<GrantedAuthority> authorities = new ArrayList<>();
