@@ -16,6 +16,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.session.data.redis.config.ConfigureRedisAction;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.context.AbstractHttpSessionApplicationInitializer;
 
@@ -32,6 +33,11 @@ public class RedisProdConfig extends AbstractHttpSessionApplicationInitializer {
   private Integer port;
 
   private final ObjectMapper objectMapper;
+
+  @Bean
+  public ConfigureRedisAction configureRedisAction() {
+    return ConfigureRedisAction.NO_OP;
+  }
 
   @Bean
   public RedisConnectionFactory lettuceConnectionFactory() {
