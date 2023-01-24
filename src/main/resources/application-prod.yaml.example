@@ -10,6 +10,11 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: validate
+  session:
+    store-type: redis
+  redis:
+    host: <need vale>
+    port: 6379
 
 frontend:
   domain: <need value>
