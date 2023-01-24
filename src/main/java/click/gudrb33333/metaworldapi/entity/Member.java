@@ -3,6 +3,7 @@ package click.gudrb33333.metaworldapi.entity;
 import click.gudrb33333.metaworldapi.entity.type.LoginType;
 import click.gudrb33333.metaworldapi.entity.type.LoginTypeConverter;
 import click.gudrb33333.metaworldapi.entity.type.Role;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -30,7 +31,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @Table(name = "members")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member implements Serializable {
 
   @Id
   @GeneratedValue(generator = "UUID")
