@@ -51,6 +51,8 @@ public class SwaggerConfig {
                     META WORLD REST API 입니다.<br><br>
                     세션기반으로 인증이 됩니다.<br>
                     권한을 위해서 5.회원인증에서 회원가입 후, 로그인 해주세요.<br><br>
+                    
+                    알림! 포트폴리오 용입니다. 가짜이메일로 회원가입 해주세요. <br>
                     """)
         .build();
   }
