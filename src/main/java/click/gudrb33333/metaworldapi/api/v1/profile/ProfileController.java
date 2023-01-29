@@ -47,7 +47,8 @@ public class ProfileController {
           S3에 아바타 3D 에셋을 업로드 한 후, 프로필을 생성합니다.<br>
           avatarUrl의 URL에서 GLB파일을 InputStream으로 받아 업로드 합니다.<br><br>
         
-          publicType이 private인 경우 자기 자신만 사용가능합니다.
+          publicType이 private인 경우 자기 자신만 사용가능합니다.<br><br>
+          가능한 Type은 아래 Schema를 클릭하여 Enum Array를 확인해주세요.
         """)
   @ApiResponses(
       value = {
@@ -93,7 +94,8 @@ public class ProfileController {
             S3에 아바타 3D 에셋을 업로드 한 후, 세션정보로 자신의 프로필을 수정합니다.<br>
             avatarUrl의 URL에서 GLB파일을 InputStream으로 받아 업로드 합니다.<br><br>
             
-            publicType이 private인 경우 자기 자신만 사용가능합니다.
+            publicType이 private인 경우 자기 자신만 사용가능합니다.<br><br>
+            가능한 Type은 아래 Schema를 클릭하여 Enum Array를 확인해주세요.
           """)
   @ApiResponses(
       value = {

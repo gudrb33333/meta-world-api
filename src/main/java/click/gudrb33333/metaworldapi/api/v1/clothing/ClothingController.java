@@ -44,8 +44,11 @@ public class ClothingController {
       """
         로컬파일을 InputStream으로 받아 S3로 업로드 합니다.<br><br>
       
-        associateLink는 참고 사이트 URL입니다.<br>
-        publicType이 private인 경우 자기 자신만 사용가능합니다.
+        associateLink는 참고 사이트 URL입니다.<br><br>
+        
+        publicType이 private인 경우 자기 자신만 사용가능합니다.<br><br>
+        
+        가능한 Type은 아래 Schema를 클릭하여 Enum Array를 확인해주세요.
       """)
   @ApiResponses(
       value = {
