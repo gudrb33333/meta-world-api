@@ -48,7 +48,6 @@ public class AuthController {
   @ApiResponses(
       value = {
           @ApiResponse(code = 201, message = "Successful sign in."),
-          @ApiResponse(code = 403, message = "Invalid email or password provided."),
           @ApiResponse(code = 400, message = "Invalid request supplied."),
       })
   public void signin(@Valid @RequestBody MemberLoginDto MemberLoginDto) {
