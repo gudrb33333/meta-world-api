@@ -53,8 +53,8 @@ public class ProfileController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 201, message = "successful creation."),
-        @ApiResponse(code = 400, message = "Invalid profile supplied."),
-        @ApiResponse(code = 403, message = "no permission.")
+        @ApiResponse(code = 400, message = "Invalid request supplied."),
+        @ApiResponse(code = 401, message = "Not sign in."),
       })
   public ResponseEntity<Object> create(@Valid @RequestBody ProfileCreateDto profileCreateDto) {
     Member member = sessionUtil.getCurrentMember();
@@ -66,6 +66,11 @@ public class ProfileController {
   @ApiOperation(
       value = "조건에 맞는 프로필을 페이지로 조회한다.",
       notes = "프로필의 닉네임, 아바타 3D 자산(서명된 URL), 페이지 정보가 반환됩니다.")
+  @ApiResponses(
+      value = {
+          @ApiResponse(code = 200, message = "Successful operation."),
+          @ApiResponse(code = 401, message = "Not sign in."),
+      })
   public Page<ProfileResponseDto> findAllWithCondition(
       @Valid ProfileSearchCondition condition, @ApiIgnore Pageable pageable) {
     return profileService.findAllWithCondition(condition, pageable);
@@ -76,8 +81,8 @@ public class ProfileController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 200, message = "Successful operation."),
-        @ApiResponse(code = 403, message = "No permission."),
-        @ApiResponse(code = 404, message = "profile not found.")
+        @ApiResponse(code = 401, message = "Not sign in."),
+        @ApiResponse(code = 404, message = "Profile not found.")
       })
   public ResponseEntity<ProfileResponseDto> findSigninMemberProfile()
       throws IOException, ParseException, CloudFrontServiceException {
@@ -100,9 +105,9 @@ public class ProfileController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 204, message = "Successful operation."),
-        @ApiResponse(code = 400, message = "Invalid profile supplied."),
-        @ApiResponse(code = 403, message = "No permission."),
-        @ApiResponse(code = 404, message = "profile not found.")
+        @ApiResponse(code = 400, message = "Invalid request supplied."),
+        @ApiResponse(code = 401, message = "Not sign in."),
+        @ApiResponse(code = 404, message = "Profile not found.")
       })
   public ResponseEntity<String> updateSigninMemberProfile(
       @Valid @RequestBody ProfileUpdateDto profileUpdateDto) {
@@ -117,8 +122,8 @@ public class ProfileController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 204, message = "Successful operation."),
-        @ApiResponse(code = 403, message = "No permission."),
-        @ApiResponse(code = 404, message = "profile not found.")
+        @ApiResponse(code = 401, message = "Not sign in."),
+        @ApiResponse(code = 404, message = "Profile not found.")
       })
   public ResponseEntity<String> deleteSigninMemberProfile() {
     Member member = sessionUtil.getCurrentMember();

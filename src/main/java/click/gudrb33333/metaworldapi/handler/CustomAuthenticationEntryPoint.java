@@ -21,7 +21,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       HttpServletResponse response,
       AuthenticationException authenticationException)
       throws IOException, ServletException {
-    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     OutputStream out = response.getOutputStream();

@@ -50,8 +50,8 @@ public class AvatarController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 201, message = "Successful creation."),
-        @ApiResponse(code = 400, message = "Invalid avatar supplied."),
-        @ApiResponse(code = 403, message = "No permission.")
+        @ApiResponse(code = 400, message = "Invalid request supplied."),
+        @ApiResponse(code = 401, message = "Not sign in.")
       })
   public ResponseEntity<String> create(@Valid @RequestBody AvatarCreateDto avatarCreateDto)
       throws IOException {
@@ -65,8 +65,8 @@ public class AvatarController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 200, message = "Successful operation."),
-        @ApiResponse(code = 400, message = "Invalid UUID supplied."),
-        @ApiResponse(code = 403, message = "No permission."),
+        @ApiResponse(code = 400, message = "Invalid request supplied."),
+        @ApiResponse(code = 401, message = "Not sign in."),
         @ApiResponse(code = 404, message = "Avatar not found.")
       })
   public ResponseEntity<AvatarResponseDto> findOne(

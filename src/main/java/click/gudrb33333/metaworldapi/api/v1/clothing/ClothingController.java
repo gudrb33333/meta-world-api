@@ -53,8 +53,8 @@ public class ClothingController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 201, message = "successful creation."),
-        @ApiResponse(code = 400, message = "Invalid clothing supplied."),
-        @ApiResponse(code = 403, message = "no permission.")
+        @ApiResponse(code = 400, message = "Invalid request supplied."),
+        @ApiResponse(code = 401, message = "Not sign in."),
       })
   public ResponseEntity<String> create(
       @Valid @RequestPart ClothingCreateDto clothingCreateDto,
@@ -69,8 +69,8 @@ public class ClothingController {
   @ApiResponses(
       value = {
         @ApiResponse(code = 200, message = "Successful operation."),
-        @ApiResponse(code = 400, message = "Invalid UUID supplied."),
-        @ApiResponse(code = 403, message = "No permission."),
+        @ApiResponse(code = 400, message = "Invalid request supplied."),
+        @ApiResponse(code = 401, message = "Not sign in."),
         @ApiResponse(code = 404, message = "Clothing not found.")
       })
   public ResponseEntity<ClothingResponseDto> findOne(

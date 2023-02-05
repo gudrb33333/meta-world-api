@@ -28,8 +28,8 @@ public class MemberController {
   @ApiResponses(
       value = {
           @ApiResponse(code = 200, message = "Successful operation."),
-          @ApiResponse(code = 400, message = "Invalid UUID supplied."),
-          @ApiResponse(code = 404, message = "Member not found.")
+          @ApiResponse(code = 400, message = "Invalid request supplied."),
+          @ApiResponse(code = 401, message = "Not sign in.")
       })
   public ResponseEntity<MemberResponseDto> findSigninMember() {
     Member member = sessionUtil.getCurrentMember();
