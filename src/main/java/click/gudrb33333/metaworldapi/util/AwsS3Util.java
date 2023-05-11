@@ -125,14 +125,16 @@ public class AwsS3Util {
             // DateGreaterThan (optional)
             null);
 
-    return CloudFrontService.signUrl(
-        // Resource URL or Path
-        "https://" + distributionDomain + s3ObjectKey,
-        // Certificate identifier, an active trusted signer for the distribution
-        keyPairId,
-        // DER Private key data
-        derPrivateKey,
-        // Access control policy
-        policy);
+//    return CloudFrontService.signUrl(
+//        // Resource URL or Path
+//        "https://" + distributionDomain + s3ObjectKey,
+//        // Certificate identifier, an active trusted signer for the distribution
+//        keyPairId,
+//        // DER Private key data
+//        derPrivateKey,
+//        // Access control policy
+//        policy);
+
+      return signedUrlCanned;
   }
 }
