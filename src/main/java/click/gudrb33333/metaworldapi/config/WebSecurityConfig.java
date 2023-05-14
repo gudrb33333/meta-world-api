@@ -33,7 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     "/swagger*/**",
     "/v3/api-docs",
     "/api/v1/auth/signup",
-    "/api/v1/auth/signin"
+    "/api/v1/auth/signin",
+    "/api/v1/clothing/{uuid}"
   };
   private static final String[] PERMIT_ADMIN_AND_MEMBER_LIST = {"/api/v1/auth/logout"};
   private static final String[] PERMIT_ADMIN_LIST = {};
