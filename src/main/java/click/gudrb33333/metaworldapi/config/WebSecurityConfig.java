@@ -1,6 +1,7 @@
 package click.gudrb33333.metaworldapi.config;
 
 import click.gudrb33333.metaworldapi.api.v1.auth.AuthService;
+import click.gudrb33333.metaworldapi.api.v1.auth.CustomOAuth2UserService;
 import click.gudrb33333.metaworldapi.entity.type.Role;
 import click.gudrb33333.metaworldapi.filter.CustomUsernamePasswordAuthenticationFilter;
 import click.gudrb33333.metaworldapi.handler.CustomAuthenticationEntryPoint;
@@ -8,6 +9,7 @@ import click.gudrb33333.metaworldapi.handler.CustomAuthenticationFailureHandler;
 import click.gudrb33333.metaworldapi.handler.CustomAuthenticationSuccessHandler;
 import click.gudrb33333.metaworldapi.util.PasswordEncoderUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +23,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+  @Value("${frontend.domain}")
+  private String frontendDomain;
+
   private final AuthService authService;
+  private final CustomOAuth2UserService customOAuth2UserService;
   private final PasswordEncoderUtil passwordEncoderUtil;
   private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
   private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -69,7 +75,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .anyRequest()
         .hasRole(roleMember)
         .and()
-        .addFilterAt(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        .addFilterAt(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .oauth2Login()
+        .defaultSuccessUrl(frontendDomain + "?logged-in-init")
+        .userInfoEndpoint()
+        .userService(customOAuth2UserService);
+
   }
 
   @Override

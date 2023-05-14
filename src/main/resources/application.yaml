@@ -2,6 +2,7 @@ spring:
   #Profile
   profiles:
     active: dev
+    include: google
   #Flyway config
   flyway:
     enabled: true
@@ -18,3 +19,4 @@ server:
 
 ext:
   appVersion: ${ext.appVersion}
+

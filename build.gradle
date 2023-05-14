@@ -64,6 +64,9 @@ dependencies {
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 	implementation group: 'net.java.dev.jets3t', name: 'jets3t', version: '0.9.4'
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.45'
+
+	//OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 //querydsl 추가 시작
