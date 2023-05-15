@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,7 +30,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Getter
-@Table(name = "members")
+@Table(
+    name = "members",
+    uniqueConstraints = {
+      @UniqueConstraint(name = "UK_members_email_login_type", columnNames = {"email", "login_type"}),
+      @UniqueConstraint(name = "UK_members_profile_id", columnNames = {"profile_id"})
+    }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member implements Serializable {
 

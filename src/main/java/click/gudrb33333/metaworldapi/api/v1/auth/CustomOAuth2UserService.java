@@ -76,7 +76,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private Member createMember(String email, LoginType finalLoginType) {
         Member newMember =Member.builder()
             .email(email)
-            .password("noPassword")
+            .password("")
             .loginType(finalLoginType)
             .role(Role.MEMBER)
             .build();
