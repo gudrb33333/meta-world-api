@@ -2,7 +2,7 @@ spring:
   #Profile
   profiles:
     active: dev
-    include: google
+    include: google, kakao
   #Flyway config
   flyway:
     enabled: true
