@@ -14,10 +14,7 @@ spring:
         show_sql: true
         format_sql: true
   session:
-    store-type: redis
-  redis:
-    host: <need vale>
-    port: 6379
+    store-type: none
 
 logging.level:
   org.hibernate.SQL: debug
