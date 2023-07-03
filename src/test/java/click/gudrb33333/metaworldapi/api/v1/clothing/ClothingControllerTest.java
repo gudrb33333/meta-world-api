@@ -1,12 +1,9 @@
 package click.gudrb33333.metaworldapi.api.v1.clothing;
 
-import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import click.gudrb33333.metaworldapi.api.v1.clothing.dto.ClothingCreateDto;
@@ -31,6 +28,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -111,7 +109,16 @@ class ClothingControllerTest {
         .willReturn(testClothingResponseDto);
 
     mockMvc
-        .perform(get("/api/v1/clothing/" + testAssetId))
-        .andExpect(status().isOk());
+        .perform(get("/api/v1/clothing/" + testAssetId).session(mockHttpSession)
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(String.valueOf(testAssetId)))
+        .andExpect(jsonPath("$.signedClothingUrl").value("testSignedUrl"))
+        .andExpect(jsonPath("$.associateLink").value("testAssociateLink"))
+        .andExpect(jsonPath("$.serialNumber").value("testSerialNumber"))
+        .andExpect(jsonPath("$.price").value("10000"))
+        .andExpect(jsonPath("$.name").value("testName"))
+        .andExpect(jsonPath("$.detailDescription").value("testDetailDescription"))
+        .andExpect(jsonPath("$.brand").value("testBrand"));
   }
 }
