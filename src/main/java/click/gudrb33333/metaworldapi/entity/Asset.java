@@ -55,7 +55,7 @@ public abstract class Asset {
   private UUID s3AssetUUID;
 
   @NotNull
-  @Column(name = "extension")
+  @Column
   @Convert(converter = ExtensionTypeConverter.class)
   private ExtensionType extension;
 
@@ -65,16 +65,15 @@ public abstract class Asset {
   private S3DirectoryType s3DirectoryType;
 
   @NotNull
-  @Column(name = "public_type")
   @Convert(converter = PublicTypeConverter.class)
   private PublicType publicType;
 
   @CreationTimestamp
-  @Column(name = "inserted_at")
+  @Column
   private LocalDateTime insertedAt;
 
   @UpdateTimestamp
-  @Column(name = "updated_at")
+  @Column
   private LocalDateTime updatedAt;
 
   public Asset(

@@ -29,19 +29,16 @@ public class Clothing extends Asset {
 
   private String brand;
 
-  @Column(name = "serial_number")
   private String serialNumber;
 
-  @Column(name = "gender_type")
   @Convert(converter = GenderTypeConverter.class)
   private GenderType genderType;
 
   private int price;
 
-  @Column(name = "associate_link")
   private String associateLink;
 
-  @Column(name = "detail_description", columnDefinition = "TEXT")
+  @Column(columnDefinition = "TEXT")
   private String detailDescription;
 
   @Builder

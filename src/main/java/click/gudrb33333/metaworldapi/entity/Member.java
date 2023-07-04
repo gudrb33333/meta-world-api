@@ -38,7 +38,7 @@ import org.hibernate.annotations.UpdateTimestamp;
     }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member implements Serializable {
+public class Member {
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -51,7 +51,8 @@ public class Member implements Serializable {
   @Column(unique = true)
   private String email;
 
-  @NotNull private String password;
+  @NotNull
+  private String password;
 
   @NotNull
   @Column(name = "login_type")
@@ -63,11 +64,9 @@ public class Member implements Serializable {
   private Role role;
 
   @CreationTimestamp
-  @Column(name = "inserted_at")
   private LocalDateTime insertedAt;
 
   @UpdateTimestamp
-  @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
   @JoinColumn(name = "profile_id", unique = true)

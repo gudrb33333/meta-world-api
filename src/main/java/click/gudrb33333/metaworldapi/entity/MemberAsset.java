@@ -33,11 +33,9 @@ public class MemberAsset {
   private UUID id;
 
   @CreationTimestamp
-  @Column(name = "inserted_at")
   private LocalDateTime insertedAt;
 
   @UpdateTimestamp
-  @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
   @ManyToOne(targetEntity = Member.class, fetch = FetchType.LAZY)

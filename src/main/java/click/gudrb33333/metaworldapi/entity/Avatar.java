@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue(Values.AVATAR)
 public class Avatar extends Asset {
 
-  @Column(name = "gender_type")
   @Convert(converter = GenderTypeConverter.class)
   private GenderType genderType;
 

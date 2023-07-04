@@ -35,17 +35,15 @@ public class Profile {
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   private UUID id;
 
-  @NotNull private String nickname;
+  @NotNull
+  private String nickname;
 
   @CreationTimestamp
-  @Column(name = "inserted_at")
   private LocalDateTime insertedAt;
 
   @UpdateTimestamp
-  @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
   @JoinColumn(name = "asset_id", unique = true)
