@@ -38,7 +38,7 @@ import org.springframework.security.access.AccessDeniedException;
 @ExtendWith(MockitoExtension.class)
 class ClothingServiceTest {
 
-  @InjectMocks ClothingService clothingService;
+  @InjectMocks private ClothingService clothingService;
 
   @Mock private ClothingRepository clothingRepository;
 

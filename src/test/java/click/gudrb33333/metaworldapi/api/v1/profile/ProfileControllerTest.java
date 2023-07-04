@@ -41,11 +41,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @AutoConfigureMockMvc
 class ProfileControllerTest {
 
-  @Autowired MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @MockBean ProfileService profileService;
+  @MockBean private ProfileService profileService;
 
   MockHttpSession mockHttpSession;
 

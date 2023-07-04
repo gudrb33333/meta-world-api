@@ -32,14 +32,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class AvatarControllerTest {
 
-  @Autowired
-  MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @MockBean
-  AvatarService avatarService;
+  @MockBean private AvatarService avatarService;
 
   @Test
   @WithAuthMember(email = "test@test.com", role = Role.MEMBER)

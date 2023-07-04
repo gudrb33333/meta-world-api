@@ -91,8 +91,8 @@ class AuthServiceTest {
 
     @Test
     void whenMemberFound() {
-      given(memberRepository.findByEmailAndLoginType(testMember.getEmail(), LoginType.LOCAL)).willReturn(
-          Optional.of(testMember));
+      given(memberRepository.findByEmailAndLoginType(testMember.getEmail(), LoginType.LOCAL))
+          .willReturn(Optional.of(testMember));
 
       User testSecurityUser = (User) authService.loadUserByUsername(testMember.getEmail());
 

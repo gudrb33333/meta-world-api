@@ -34,13 +34,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ClothingControllerTest {
 
-  @Autowired MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @MockBean ClothingService clothingService;
+  @MockBean private ClothingService clothingService;
 
-  MockHttpSession mockHttpSession;
+  private MockHttpSession mockHttpSession;
 
   @BeforeEach
   public void setSession() {
@@ -109,8 +109,10 @@ class ClothingControllerTest {
         .willReturn(testClothingResponseDto);
 
     mockMvc
-        .perform(get("/api/v1/clothing/" + testAssetId).session(mockHttpSession)
-        .contentType(MediaType.APPLICATION_JSON))
+        .perform(
+            get("/api/v1/clothing/" + testAssetId)
+                .session(mockHttpSession)
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(String.valueOf(testAssetId)))
         .andExpect(jsonPath("$.signedClothingUrl").value("testSignedUrl"))

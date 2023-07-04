@@ -41,13 +41,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @AutoConfigureMockMvc
 class AuthControllerTest {
 
-  @Autowired MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
-  @MockBean AuthService authService;
+  @MockBean private AuthService authService;
 
-  @Autowired PasswordEncoderUtil passwordEncoderUtil;
+  @Autowired private PasswordEncoderUtil passwordEncoderUtil;
 
   @Test
   void signup() throws Exception {
@@ -94,8 +94,7 @@ class AuthControllerTest {
     void whenNotFoundMember() throws Exception {
       String content = objectMapper.writeValueAsString(testMemberLoginDto);
 
-      given(authService.loadUserByUsername(testMemberLoginDto.getEmail()))
-          .willReturn(null);
+      given(authService.loadUserByUsername(testMemberLoginDto.getEmail())).willReturn(null);
 
       mockMvc
           .perform(

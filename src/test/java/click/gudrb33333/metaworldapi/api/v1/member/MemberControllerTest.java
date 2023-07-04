@@ -27,8 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("MemberControllerTest")
 class MemberControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
   private MockHttpSession mockHttpSession;
 
@@ -48,8 +47,7 @@ class MemberControllerTest {
     @DisplayName("로그인을 안 했을 때")
     public void whenNotSignedIn() throws Exception {
       mockMvc
-          .perform(
-              get("/api/v1/members/me").session(mockHttpSession))
+          .perform(get("/api/v1/members/me").session(mockHttpSession))
           .andExpect(status().isUnauthorized())
           .andExpect(jsonPath("$.message").value("access denied."));
     }
@@ -59,8 +57,7 @@ class MemberControllerTest {
     @WithAuthMember(email = "test@test.com", role = Role.MEMBER)
     public void whenSignedIn() throws Exception {
       mockMvc
-          .perform(
-              get("/api/v1/members/me").session(mockHttpSession))
+          .perform(get("/api/v1/members/me").session(mockHttpSession))
           .andExpect(status().isOk())
           .andExpect(content().contentType(MediaType.APPLICATION_JSON))
           .andExpect((ResultMatcher) jsonPath("$.email").exists());
